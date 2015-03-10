@@ -1,23 +1,6 @@
-/*
- * ListFilies.java
- * Michael David Pascual
+/**
+ * ListFiles.java
  * 
- * This classfile extends DirectoryWalker.
- * 
- *  Usage:
- *  ----------------------
- *  First Constructor
- *  ----------------------
- *  The First Constructor is used if you just want to get the list of Files in a specified directory
- *  Hidden Files Included
- *  
- *  ----------------------
- *  Second Constructor
- *  ----------------------
- *  Is used when using a filter to only includes files that matches the filter.
- *  See FileFilterUtils Documentation on how to implement filters
- *  http://commons.apache.org/proper/commons-io/javadocs/api-release/org/apache/commons/io/filefilter/FileFilterUtils.html
- *  
  */
 
 import java.io.*;

@@ -1,14 +1,3 @@
-/*
- * maingui.java
- * Michael David Pascual
- * 
- * Main file to start the GUI. This classfile handles all Action event handlers
- * 
- *  Usage:
- *  Just call this main.
- *  
- */
-
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -56,7 +45,6 @@ import javax.swing.event.ChangeEvent;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 
 public class maingui {
 
@@ -117,7 +105,8 @@ public class maingui {
 		lblNewLabel.setBounds(10, 20, 99, 14);
 		frame.getContentPane().add(lblNewLabel);
 		
-		textField = new JTextField();
+		textField = 
+				new JTextField();
 				
 		textField.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		textField.setBounds(110, 19, 494, 20);
@@ -136,8 +125,9 @@ public class maingui {
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblChooseCriteriaTo = new JLabel("Choose Criteria to sort by: ");
-		lblChooseCriteriaTo.setBounds(18, 15, 131, 14);
+		final JLabel lblChooseCriteriaTo = new JLabel("Choose criteria to sort by:");
+		lblChooseCriteriaTo.setEnabled(false);
+		lblChooseCriteriaTo.setBounds(18, 15, 146, 14);
 		panel.add(lblChooseCriteriaTo);
 		
 		final JRadioButton rdbtnNewRadioButton = new JRadioButton("Alphanumerically");
@@ -161,7 +151,7 @@ public class maingui {
 		rdbtnDateCreated.setBounds(17, 61, 117, 23);
 		panel.add(rdbtnDateCreated);
 		
-		JLabel lblnowweek = new JLabel("(< 1week, 1 - 3 weeks, 1 month - 1 year, etc.)");
+		JLabel lblnowweek = new JLabel("(< 1 wk, 1-2 wk, 2 wk - 1 mo, etc.)");
 		lblnowweek.setEnabled(false);
 		lblnowweek.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblnowweek.setBounds(140, 66, 269, 14);
@@ -215,36 +205,37 @@ public class maingui {
 		
 		chckbxNewCheckBox.setFont(new Font("Tahoma", Font.BOLD, 14));
 		chckbxNewCheckBox.setEnabled(false);
-		chckbxNewCheckBox.setBounds(17, 30, 137, 23);
+		chckbxNewCheckBox.setBounds(17, 25, 137, 23);
 		panel_2.add(chckbxNewCheckBox);
 		
-		JLabel lblcheckToMove = new JLabel("(Check to move all files into a new folder \r\ninto a specified name)");
+		JLabel lblcheckToMove = new JLabel("(Check to move all files into a new folder \r\nunder a specified name)");
 		lblcheckToMove.setEnabled(false);
 		lblcheckToMove.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblcheckToMove.setBounds(38, 50, 361, 23);
+		lblcheckToMove.setBounds(38, 45, 361, 23);
 		panel_2.add(lblcheckToMove);
 		
-		JLabel lblFolderName = new JLabel("Folder Name: ");
+		final JLabel lblFolderName = new JLabel("Folder Name: ");
+		lblFolderName.setEnabled(false);
 		lblFolderName.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblFolderName.setBounds(17, 77, 81, 23);
+		lblFolderName.setBounds(17, 70, 81, 23);
 		panel_2.add(lblFolderName);
 		
 		textField_1 = new JTextField();
 		textField_1.setEnabled(false);
-		textField_1.setBounds(98, 79, 258, 20);
+		textField_1.setBounds(98, 72, 258, 20);
 		panel_2.add(textField_1);
 		textField_1.setColumns(10);
 		
 		final JCheckBox chckbxRetainOriginalFiles = new JCheckBox("Retain Original Files");
 		chckbxRetainOriginalFiles.setFont(new Font("Tahoma", Font.BOLD, 14));
 		chckbxRetainOriginalFiles.setEnabled(false);
-		chckbxRetainOriginalFiles.setBounds(17, 110, 159, 23);
+		chckbxRetainOriginalFiles.setBounds(17, 97, 159, 23);
 		panel_2.add(chckbxRetainOriginalFiles);
 		
-		JLabel lblWillNotDelete = new JLabel("(Will not delete files in source path)");
+		JLabel lblWillNotDelete = new JLabel("(Check to copy files instead of move them)");
 		lblWillNotDelete.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblWillNotDelete.setEnabled(false);
-		lblWillNotDelete.setBounds(38, 130, 361, 14);
+		lblWillNotDelete.setBounds(38, 120, 361, 14);
 		panel_2.add(lblWillNotDelete);
 		
 		JLabel lblDestinationPath = new JLabel("Destination Path: ");
@@ -317,12 +308,14 @@ public class maingui {
 					rdbtnDateCreated.setEnabled(true);
 					rdbtnFilzeSize.setEnabled(true);
 					rdbtnFileType.setEnabled(true);
+					lblChooseCriteriaTo.setEnabled(true);
 				}
 				else if (textField.getText().isEmpty()){
 					rdbtnNewRadioButton.setEnabled(false);
 					rdbtnDateCreated.setEnabled(false);
 					rdbtnFilzeSize.setEnabled(false);
 					rdbtnFileType.setEnabled(false);
+					lblChooseCriteriaTo.setEnabled(false);
 				}
 				if(btnNewButton_1.isEnabled()){
 					if(textField_2.getText().equals(textField.getText())){
@@ -419,9 +412,11 @@ public class maingui {
 			public void stateChanged(ChangeEvent e) {
 				if(chckbxNewCheckBox.isSelected()){
 					textField_1.setEnabled(true);
+					lblFolderName.setEnabled(true);
 				}
 				else if(!chckbxNewCheckBox.isSelected()){
 					textField_1.setEnabled(false);
+					lblFolderName.setEnabled(false);
 				}
 			}
 		});
@@ -491,6 +486,9 @@ public class maingui {
 				txtrWdwSft.setBackground(Color.white);
 				progressBar.setEnabled(true);
 				//PUT START SORT SEQUENCE HERE
+				
+				//SUCESS
+				
 			}
 		});
 		
@@ -515,4 +513,5 @@ public class maingui {
 		});
 		
 	}
+	
 }

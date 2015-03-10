@@ -9,13 +9,9 @@ import org.apache.commons.io.input.*;
 import org.apache.commons.io.monitor.*;
 import org.apache.commons.io.output.*;
 
-
 public class ClutterDuster {
 
 	public static void main(String[] args)throws IOException {
-		// TODO Auto-generated method stub
-		
-		
 		//FileFunctions sample usage #1
 		File usethis = new File("D:\\Downloads\\testsuite");
 		ListFiles execution = new ListFiles();

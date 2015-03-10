@@ -1,11 +1,5 @@
-/*
+/**
  * SortFiles.java
- * Michael David Pascual
- * 
- * This is where all the sorting heavywork happens.
- * 
- *  Usage:
- *  
  */
 
 import java.io.*;
@@ -18,7 +12,7 @@ import org.apache.commons.io.input.*;
 import org.apache.commons.io.monitor.*;
 import org.apache.commons.io.output.*;
 
-public class sortFiles {
+public class SortFiles {
 	
 	public void alphanumeric(List unsorted){
 		int i = 0;
@@ -57,4 +51,5 @@ public class sortFiles {
 	public void sizeSort(List unsorted){
 		
 	}
+	
 }
