@@ -258,7 +258,7 @@ public class maingui {
 		btnChangeDestinationFolder.setBounds(143, 252, 194, 23);
 		frame.getContentPane().add(btnChangeDestinationFolder);
 		
-		final JButton btnUseCurrent = new JButton("Use Current");
+		final JButton btnUseCurrent = new JButton("Use Source");
 				
 		btnUseCurrent.setEnabled(false);
 		btnUseCurrent.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -308,16 +308,9 @@ public class maingui {
 					rdbtnDateCreated.setEnabled(true);
 					rdbtnFilzeSize.setEnabled(true);
 					rdbtnFileType.setEnabled(true);
-					lblChooseCriteriaTo.setEnabled(true);
+					//lblChooseCriteriaTo.setEnabled(true);
 				}
-				else if (textField.getText().isEmpty()){
-					rdbtnNewRadioButton.setEnabled(false);
-					rdbtnDateCreated.setEnabled(false);
-					rdbtnFilzeSize.setEnabled(false);
-					rdbtnFileType.setEnabled(false);
-					lblChooseCriteriaTo.setEnabled(false);
-				}
-				if(btnNewButton_1.isEnabled()){
+				if(chckbxNewCheckBox.isEnabled()){
 					if(textField_2.getText().equals(textField.getText())){
 						btnUseCurrent.setEnabled(false);
 					}
@@ -335,9 +328,9 @@ public class maingui {
 					chckbxRetainOriginalFiles.setEnabled(true);
 					textField_2.setEnabled(true);
 					btnChangeDestinationFolder.setEnabled(true);
-					btnNewButton_1.setEnabled(true);
+					//btnNewButton_1.setEnabled(true);
 				}
-				if(btnNewButton_1.isEnabled()){
+				if(chckbxNewCheckBox.isEnabled()){
 					if(textField_2.getText().equals(textField.getText())){
 						btnUseCurrent.setEnabled(false);
 					}
@@ -355,9 +348,9 @@ public class maingui {
 					chckbxRetainOriginalFiles.setEnabled(true);
 					textField_2.setEnabled(true);
 					btnChangeDestinationFolder.setEnabled(true);
-					btnNewButton_1.setEnabled(true);
+					//btnNewButton_1.setEnabled(true);
 				}
-				if(btnNewButton_1.isEnabled()){
+				if(chckbxNewCheckBox.isEnabled()){
 					if(textField_2.getText().equals(textField.getText())){
 						btnUseCurrent.setEnabled(false);
 					}
@@ -375,9 +368,9 @@ public class maingui {
 					chckbxRetainOriginalFiles.setEnabled(true);
 					textField_2.setEnabled(true);
 					btnChangeDestinationFolder.setEnabled(true);
-					btnNewButton_1.setEnabled(true);
+					//btnNewButton_1.setEnabled(true);
 				}
-				if(btnNewButton_1.isEnabled()){
+				if(chckbxNewCheckBox.isEnabled()){
 					if(textField_2.getText().equals(textField.getText())){
 						btnUseCurrent.setEnabled(false);
 					}
@@ -395,9 +388,9 @@ public class maingui {
 					chckbxRetainOriginalFiles.setEnabled(true);
 					textField_2.setEnabled(true);
 					btnChangeDestinationFolder.setEnabled(true);
-					btnNewButton_1.setEnabled(true);
+					//btnNewButton_1.setEnabled(true);
 				}
-				if(btnNewButton_1.isEnabled()){
+				if(chckbxNewCheckBox.isEnabled()){
 					if(textField_2.getText().equals(textField.getText())){
 						btnUseCurrent.setEnabled(false);
 					}
@@ -430,18 +423,32 @@ public class maingui {
 				else if(!(textField_2.getText().equals(textField.getText()))){
 					btnUseCurrent.setEnabled(true);
 				}
+				if(textField_2.getText().isEmpty()){
+					btnNewButton_1.setEnabled(false);
+				}
+				else{
+					btnNewButton_1.setEnabled(true);
+				}
 			}
 		});
 		
 		btnUseCurrent.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				textField_2.setText(textField.getText());
-				if(textField_2.getText().equals(textField.getText())){
-					btnUseCurrent.setEnabled(false);
-				}
-				else if(!(textField_2.getText().equals(textField.getText()))){
-					btnUseCurrent.setEnabled(true);
+				if(btnUseCurrent.isEnabled()){
+					textField_2.setText(textField.getText());
+					if(textField_2.getText().equals(textField.getText())){
+						btnUseCurrent.setEnabled(false);
+					}
+					else if(!(textField_2.getText().equals(textField.getText()))){
+						btnUseCurrent.setEnabled(true);
+					}
+					if(textField_2.getText().isEmpty()){
+						btnNewButton_1.setEnabled(false);
+					}
+					else{
+						btnNewButton_1.setEnabled(true);
+					}
 				}
 			}
 		});
@@ -460,13 +467,8 @@ public class maingui {
 						rdbtnFilzeSize.setEnabled(true);
 						rdbtnFileType.setEnabled(true);
 					}
-					else if (textField.getText().isEmpty()){
-						rdbtnNewRadioButton.setEnabled(false);
-						rdbtnDateCreated.setEnabled(false);
-						rdbtnFilzeSize.setEnabled(false);
-						rdbtnFileType.setEnabled(false);
-					}
-					if(btnNewButton_1.isEnabled()){
+					
+					if(chckbxNewCheckBox.isEnabled()){
 						if(textField_2.getText().equals(textField.getText())){
 							btnUseCurrent.setEnabled(false);
 						}
@@ -482,34 +484,46 @@ public class maingui {
 		btnNewButton_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				txtrWdwSft.setEnabled(true);
-				txtrWdwSft.setBackground(Color.white);
-				progressBar.setEnabled(true);
-				//PUT START SORT SEQUENCE HERE
-				
-				//SUCESS
-				
+				if(btnNewButton_1.isEnabled()){
+					txtrWdwSft.setEnabled(true);
+					txtrWdwSft.setBackground(Color.white);
+					progressBar.setEnabled(true);
+					//PUT START SORT SEQUENCE HERE
+					
+					//SUCESS
+				}				
 			}
 		});
 		
 		btnChangeDestinationFolder.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				JFileChooser chooser = new JFileChooser();
-				chooser.setFileSelectionMode( JFileChooser.DIRECTORIES_ONLY);
-				chooser.setDialogTitle("Folder Browser");
-				if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-					textField_2.setText(chooser.getSelectedFile().getPath());
-					if(btnNewButton_1.isEnabled()){
-						if(textField_2.getText().equals(textField.getText())){
-							btnUseCurrent.setEnabled(false);
+				if(btnUseCurrent.isEnabled()){
+					JFileChooser chooser = new JFileChooser();
+					chooser.setFileSelectionMode( JFileChooser.DIRECTORIES_ONLY);
+					chooser.setDialogTitle("Folder Browser");
+					if(btnChangeDestinationFolder.isEnabled()){
+						if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+							textField_2.setText(chooser.getSelectedFile().getPath());
+							if(chckbxNewCheckBox.isEnabled()){
+								if(textField_2.getText().equals(textField.getText())){
+									btnUseCurrent.setEnabled(false);
+								}
+								else if(!(textField_2.getText().equals(textField.getText()))){
+									btnUseCurrent.setEnabled(true);
+								}
+							}
 						}
-						else if(!(textField_2.getText().equals(textField.getText()))){
-							btnUseCurrent.setEnabled(true);
+						if(textField_2.getText().isEmpty()){
+							btnNewButton_1.setEnabled(false);
+						}
+						else{
+							btnNewButton_1.setEnabled(true);
 						}
 					}
 				}
-			}
+		}
+				
 		});
 		
 	}
