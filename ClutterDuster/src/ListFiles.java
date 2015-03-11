@@ -1,8 +1,3 @@
-/**
- * ListFiles.java
- * 
- */
-
 import java.io.*;
 import java.util.*;
 
@@ -24,10 +19,9 @@ public class ListFiles extends DirectoryWalker {
 		// Constructor for filtering
 		super(filter, 1);
 	}
-
 	
-	public List grabFileList(File startDirectory)throws IOException{
-		//Initiate Directory Walker
+	public List grabFileList(File startDirectory)throws IOException {
+		// Initiate Directory Walker
 		List results = new ArrayList();
 		walk(startDirectory, results);
 		return results;
@@ -39,6 +33,5 @@ public class ListFiles extends DirectoryWalker {
 
 	protected void handleFile(File file, int depth, Collection results) {
 		results.add(file);
-	}	    
-	
+	}
 }

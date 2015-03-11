@@ -7,6 +7,9 @@
 	<classpathentry kind="lib" path="lib/commons-io-2.4-test-sources.jar"/>
 	<classpathentry kind="lib" path="lib/commons-io-2.4-tests.jar"/>
 	<classpathentry kind="lib" path="lib/commons-io-2.4.jar"/>
+<<<<<<< HEAD
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+=======
+>>>>>>> refs/remotes/ClutterDuster/master
 	<classpathentry kind="output" path="bin"/>
 </classpath>

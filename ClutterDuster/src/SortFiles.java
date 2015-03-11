@@ -1,7 +1,3 @@
-/**
- * SortFiles.java
- */
-
 import java.io.*;
 import java.util.*;
 
@@ -51,5 +47,4 @@ public class SortFiles {
 	public void sizeSort(List unsorted){
 		
 	}
-	
 }
