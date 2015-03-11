@@ -45,7 +45,7 @@ import javax.swing.event.ChangeEvent;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
+//comment here
 public class maingui {
 	
 	private JFrame frame;
