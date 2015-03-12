@@ -7,6 +7,7 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JTabbedPane;
@@ -45,7 +46,7 @@ import javax.swing.event.ChangeEvent;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-//comment here
+
 public class maingui {
 	
 	private JFrame frame;
@@ -94,7 +95,7 @@ public class maingui {
 		panel_1.add(lblSortMethod);
 		lblSortMethod.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
-		JLabel lblSourcePath = new JLabel("Source Path:");
+		final JLabel lblSourcePath = new JLabel("Source Path:");
 		lblSourcePath.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblSourcePath.setBounds(10, 20, 99, 14);
 		frame.getContentPane().add(lblSourcePath);
@@ -231,7 +232,7 @@ public class maingui {
 		lblRetainOriginalFiles.setBounds(38, 120, 361, 14);
 		panel_2.add(lblRetainOriginalFiles);
 		
-		JLabel lblDestinationPath = new JLabel("Destination Path: ");
+		final JLabel lblDestinationPath = new JLabel("Destination Path: ");
 		lblDestinationPath.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblDestinationPath.setBounds(10, 222, 123, 14);
 		frame.getContentPane().add(lblDestinationPath);
@@ -282,13 +283,12 @@ public class maingui {
 		scrollPane.setViewportView(txtrWdwSft);
 		
 		final JProgressBar progressBar = new JProgressBar();
-		progressBar.setEnabled(false);
 		progressBar.setFont(new Font("Tahoma", Font.BOLD, 14));
 		progressBar.setStringPainted(true);
 		progressBar.setBounds(84, 452, 774, 28);
 		frame.getContentPane().add(progressBar);
 		
-		JLabel lblProgress = new JLabel("Progress:");
+		final JLabel lblProgress = new JLabel("Progress:");
 		lblProgress.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblProgress.setBounds(10, 454, 70, 21);
 		frame.getContentPane().add(lblProgress);
@@ -342,6 +342,7 @@ public class maingui {
 					chckbxRetainOriginalFiles.setEnabled(true);
 					textDestinationPath.setEnabled(true);
 					btnChangeDestinationFolder.setEnabled(true);
+					btnUseSource.setEnabled(true);
 				}
 				if (btnGo.isEnabled()) {
 					if (textDestinationPath.getText().equals(textSourcePath.getText())) {
@@ -361,6 +362,7 @@ public class maingui {
 					chckbxRetainOriginalFiles.setEnabled(true);
 					textDestinationPath.setEnabled(true);
 					btnChangeDestinationFolder.setEnabled(true);
+					btnUseSource.setEnabled(true);
 				}
 				if (btnGo.isEnabled()) {
 					if (textDestinationPath.getText().equals(textSourcePath.getText())) {
@@ -380,6 +382,7 @@ public class maingui {
 					chckbxRetainOriginalFiles.setEnabled(true);
 					textDestinationPath.setEnabled(true);
 					btnChangeDestinationFolder.setEnabled(true);
+					btnUseSource.setEnabled(true);
 				}
 				if (btnGo.isEnabled()) {
 					if (textDestinationPath.getText().equals(textSourcePath.getText())) {
@@ -478,7 +481,7 @@ public class maingui {
 					txtrWdwSft.setEnabled(true);
 					txtrWdwSft.setBackground(Color.white);
 					progressBar.setEnabled(true);
-					// PUT START SORT SEQUENCE HERE
+					// ERROR CHECKING
 					
 					// DISABLE GUI AND CHANGE BUTTON TEXT
 					textSourcePath.setEnabled(false);
@@ -495,6 +498,32 @@ public class maingui {
 					textDestinationPath.setEnabled(false);
 					btnChangeDestinationFolder.setEnabled(false);
 					btnUseSource.setEnabled(false);
+					btnGo.setText("ABORT");
+					btnGo.setForeground(Color.red);
+					txtrWdwSft.setText("");
+					txtrWdwSft.setEditable(false);
+					
+					// SIMULATION FOR DEMO
+					JOptionPane.showMessageDialog(null, "Yay!", "", JOptionPane.INFORMATION_MESSAGE);
+					
+					// ENABLE GUI AND CHANGE BUTTON TEXT
+					textSourcePath.setEnabled(true);
+					btnBrowse.setEnabled(true);
+					lblChooseCriteria.setEnabled(true);
+					rdbtnAlphanumerically.setEnabled(true);
+					rdbtnDateCreated.setEnabled(true);
+					rdbtnFilzeSize.setEnabled(true);
+					rdbtnFileType.setEnabled(true);
+					chckbxFolderGrouping.setEnabled(true);
+					lblFolderName.setEnabled(true);
+					textFolderName.setEnabled(true);
+					chckbxRetainOriginalFiles.setEnabled(true);
+					textDestinationPath.setEnabled(true);
+					btnChangeDestinationFolder.setEnabled(true);
+					btnUseSource.setEnabled(true);
+					btnGo.setText("GO");
+					btnGo.setForeground(new Color(0, 128, 0));
+					txtrWdwSft.setEditable(true);
 				}
 			}
 		});
