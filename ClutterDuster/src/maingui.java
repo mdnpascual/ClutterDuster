@@ -46,6 +46,7 @@ import javax.swing.event.ChangeEvent;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.UUID;
 
 public class maingui {
 	
@@ -55,6 +56,10 @@ public class maingui {
 	private JTextField textDestinationPath;
 	private JButton btnGo;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
+	public String lastFinal;
+	public String lastFinal2;
+	public Boolean isRunning = false;
+	Thread t;
 	
 	// Launch the application
 	public static void main(String[] args) {
@@ -202,7 +207,7 @@ public class maingui {
 		chckbxFolderGrouping.setBounds(17, 25, 137, 23);
 		panel_2.add(chckbxFolderGrouping);
 		
-		JLabel lblFolderGrouping = new JLabel("(Check to move all files into a new folder \r\nunder a specified name)");
+		JLabel lblFolderGrouping = new JLabel("(Groups folders containing your sorted files into one folder)");
 		lblFolderGrouping.setEnabled(false);
 		lblFolderGrouping.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblFolderGrouping.setBounds(38, 45, 361, 23);
@@ -226,13 +231,13 @@ public class maingui {
 		chckbxRetainOriginalFiles.setBounds(17, 97, 159, 23);
 		panel_2.add(chckbxRetainOriginalFiles);
 		
-		JLabel lblRetainOriginalFiles = new JLabel("(Check to copy files instead of move them)");
+		JLabel lblRetainOriginalFiles = new JLabel("(Retains a copy of your original files unsorted)");
 		lblRetainOriginalFiles.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblRetainOriginalFiles.setEnabled(false);
 		lblRetainOriginalFiles.setBounds(38, 120, 361, 14);
 		panel_2.add(lblRetainOriginalFiles);
 		
-		final JLabel lblDestinationPath = new JLabel("Destination Path: ");
+		final JLabel lblDestinationPath = new JLabel("Destination Path:");
 		lblDestinationPath.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblDestinationPath.setBounds(10, 222, 123, 14);
 		frame.getContentPane().add(lblDestinationPath);
@@ -310,11 +315,11 @@ public class maingui {
 				else if (textSourcePath.getText().isEmpty()) {
 					btnGo.setEnabled(false);
 				}
-				if (btnGo.isEnabled()) {
+				if (rdbtnAlphanumerically.isSelected() || rdbtnDateCreated.isSelected() || rdbtnFilzeSize.isSelected() || rdbtnFileType.isSelected()) {
 					if (textDestinationPath.getText().equals(textSourcePath.getText())) {
 						btnUseSource.setEnabled(false);
 					}
-					else if (!(textDestinationPath.getText().equals(textSourcePath.getText()))) {
+					else if (!textDestinationPath.getText().equals(textSourcePath.getText())) {
 						btnUseSource.setEnabled(true);
 					}
 				}
@@ -328,13 +333,7 @@ public class maingui {
 					chckbxRetainOriginalFiles.setEnabled(true);
 					textDestinationPath.setEnabled(true);
 					btnChangeDestinationFolder.setEnabled(true);
-					btnUseSource.setEnabled(true);
-				}
-				if (btnGo.isEnabled()) {
-					if (textDestinationPath.getText().equals(textSourcePath.getText())) {
-						btnUseSource.setEnabled(false);
-					}
-					else if (!(textDestinationPath.getText().equals(textSourcePath.getText()))) {
+					if (!textDestinationPath.getText().equals(textSourcePath.getText())) {
 						btnUseSource.setEnabled(true);
 					}
 				}
@@ -348,13 +347,7 @@ public class maingui {
 					chckbxRetainOriginalFiles.setEnabled(true);
 					textDestinationPath.setEnabled(true);
 					btnChangeDestinationFolder.setEnabled(true);
-					btnUseSource.setEnabled(true);
-				}
-				if (btnGo.isEnabled()) {
-					if (textDestinationPath.getText().equals(textSourcePath.getText())) {
-						btnUseSource.setEnabled(false);
-					}
-					else if (!(textDestinationPath.getText().equals(textSourcePath.getText()))) {
+					if (!textDestinationPath.getText().equals(textSourcePath.getText())) {
 						btnUseSource.setEnabled(true);
 					}
 				}
@@ -368,13 +361,7 @@ public class maingui {
 					chckbxRetainOriginalFiles.setEnabled(true);
 					textDestinationPath.setEnabled(true);
 					btnChangeDestinationFolder.setEnabled(true);
-					btnUseSource.setEnabled(true);
-				}
-				if (btnGo.isEnabled()) {
-					if (textDestinationPath.getText().equals(textSourcePath.getText())) {
-						btnUseSource.setEnabled(false);
-					}
-					else if (!(textDestinationPath.getText().equals(textSourcePath.getText()))) {
+					if (!textDestinationPath.getText().equals(textSourcePath.getText())) {
 						btnUseSource.setEnabled(true);
 					}
 				}
@@ -388,13 +375,7 @@ public class maingui {
 					chckbxRetainOriginalFiles.setEnabled(true);
 					textDestinationPath.setEnabled(true);
 					btnChangeDestinationFolder.setEnabled(true);
-					btnUseSource.setEnabled(true);
-				}
-				if (btnGo.isEnabled()) {
-					if (textDestinationPath.getText().equals(textSourcePath.getText())) {
-						btnUseSource.setEnabled(false);
-					}
-					else if (!(textDestinationPath.getText().equals(textSourcePath.getText()))) {
+					if (!textDestinationPath.getText().equals(textSourcePath.getText())) {
 						btnUseSource.setEnabled(true);
 					}
 				}
@@ -443,10 +424,7 @@ public class maingui {
 					else if (!(textDestinationPath.getText().equals(textSourcePath.getText()))) {
 						btnUseSource.setEnabled(true);
 					}
-					if (textDestinationPath.getText().isEmpty()) {
-						btnGo.setEnabled(false);
-					}
-					else {
+					if (!textDestinationPath.getText().isEmpty()) {
 						btnGo.setEnabled(true);
 					}
 				}
@@ -456,11 +434,18 @@ public class maingui {
 		btnBrowse.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				JFileChooser chooser = new JFileChooser();
+				JFileChooser chooser;
+				if (lastFinal != null) {
+					chooser = new JFileChooser(lastFinal);
+				}
+				else {
+					chooser = new JFileChooser();
+				}
 				chooser.setFileSelectionMode( JFileChooser.DIRECTORIES_ONLY);
 				chooser.setDialogTitle("Folder Browser");
 				if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 					textSourcePath.setText(chooser.getSelectedFile().getPath());
+					lastFinal = textSourcePath.getText();
 					if (!textSourcePath.getText().isEmpty()) {
 						if (rdbtnAlphanumerically.isEnabled() && !textDestinationPath.getText().isEmpty()) {
 							btnGo.setEnabled(true);
@@ -471,11 +456,11 @@ public class maingui {
 						rdbtnFilzeSize.setEnabled(true);
 						rdbtnFileType.setEnabled(true);
 					}
-					if (btnGo.isEnabled()) {
+					if (rdbtnAlphanumerically.isSelected() || rdbtnDateCreated.isSelected() || rdbtnFilzeSize.isSelected() || rdbtnFileType.isSelected()) {
 						if (textDestinationPath.getText().equals(textSourcePath.getText())) {
 							btnUseSource.setEnabled(false);
 						}
-						else if (!(textDestinationPath.getText().equals(textSourcePath.getText()))) {
+						else if (!textDestinationPath.getText().equals(textSourcePath.getText())) {
 							btnUseSource.setEnabled(true);
 						}
 					}
@@ -492,48 +477,87 @@ public class maingui {
 					progressBar.setEnabled(true);
 					// ERROR CHECKING
 					
-					// DISABLE GUI AND CHANGE BUTTON TEXT
-					textSourcePath.setEnabled(false);
-					btnBrowse.setEnabled(false);
-					lblChooseCriteria.setEnabled(false);
-					rdbtnAlphanumerically.setEnabled(false);
-					rdbtnDateCreated.setEnabled(false);
-					rdbtnFilzeSize.setEnabled(false);
-					rdbtnFileType.setEnabled(false);
-					chckbxFolderGrouping.setEnabled(false);
-					lblFolderName.setEnabled(false);
-					textFolderName.setEnabled(false);
-					chckbxRetainOriginalFiles.setEnabled(false);
-					textDestinationPath.setEnabled(false);
-					btnChangeDestinationFolder.setEnabled(false);
-					btnUseSource.setEnabled(false);
-					btnGo.setText("ABORT");
-					btnGo.setForeground(Color.red);
-					txtrWdwSft.setText("");
-					txtrWdwSft.setEditable(false);
-					
-					// SIMULATION FOR DEMO
-					JOptionPane.showMessageDialog(null, "Yay!", "", JOptionPane.INFORMATION_MESSAGE);
-					
-					// ENABLE GUI AND CHANGE BUTTON TEXT
-					textSourcePath.setEnabled(true);
-					btnBrowse.setEnabled(true);
-					lblChooseCriteria.setEnabled(true);
-					rdbtnAlphanumerically.setEnabled(true);
-					rdbtnDateCreated.setEnabled(true);
-					rdbtnFilzeSize.setEnabled(true);
-					rdbtnFileType.setEnabled(true);
-					chckbxFolderGrouping.setEnabled(true);
+					try {
+						if (t.isAlive()) {
+							t.interrupt();
+						}
+					} catch (Exception e2) {
+						
+					}
+					t = new Thread(new Runnable() {
+						
+						public void run() {					    	
+							isRunning = true;
+					    	disable();
+							int i = 0;
+							while (i < 100){
+								i++;
+								progressBar.setValue(i);
+								txtrWdwSft.append(UUID.randomUUID().toString() + "\n");
+								txtrWdwSft.setCaretPosition(txtrWdwSft.getDocument().getLength());	// Auto Scroll
+								try {
+									Thread.sleep(70);
+								} catch (InterruptedException e) {
+									enable();
+									isRunning = false;
+									return;
+								}
+							}
+							enable();
+							isRunning = false;
+					    }
+					}, "worker");
+					if (!isRunning) {
+						t.start();
+					}
+				}
+			}
+			
+			public void disable() {
+				// DISABLE GUI AND CHANGE BUTTON TEXT
+				textSourcePath.setEnabled(false);
+				btnBrowse.setEnabled(false);
+				lblChooseCriteria.setEnabled(false);
+				rdbtnAlphanumerically.setEnabled(false);
+				rdbtnDateCreated.setEnabled(false);
+				rdbtnFilzeSize.setEnabled(false);
+				rdbtnFileType.setEnabled(false);
+				chckbxFolderGrouping.setEnabled(false);
+				lblFolderName.setEnabled(false);
+				textFolderName.setEnabled(false);
+				chckbxRetainOriginalFiles.setEnabled(false);
+				textDestinationPath.setEnabled(false);
+				btnChangeDestinationFolder.setEnabled(false);
+				btnUseSource.setEnabled(false);
+				btnGo.setText("ABORT");
+				btnGo.setForeground(Color.red);
+				txtrWdwSft.setText("");
+				txtrWdwSft.setEditable(false);
+			}
+			
+			public void enable() {
+				// ENABLE GUI AND CHANGE BUTTON TEXT
+				textSourcePath.setEnabled(true);
+				btnBrowse.setEnabled(true);
+				lblChooseCriteria.setEnabled(true);
+				rdbtnAlphanumerically.setEnabled(true);
+				rdbtnDateCreated.setEnabled(true);
+				rdbtnFilzeSize.setEnabled(true);
+				rdbtnFileType.setEnabled(true);
+				chckbxFolderGrouping.setEnabled(true);
+				if (chckbxFolderGrouping.isSelected()) {
 					lblFolderName.setEnabled(true);
 					textFolderName.setEnabled(true);
-					chckbxRetainOriginalFiles.setEnabled(true);
-					textDestinationPath.setEnabled(true);
-					btnChangeDestinationFolder.setEnabled(true);
-					btnUseSource.setEnabled(true);
-					btnGo.setText("GO");
-					btnGo.setForeground(new Color(0, 128, 0));
-					txtrWdwSft.setEditable(true);
 				}
+				chckbxRetainOriginalFiles.setEnabled(true);
+				textDestinationPath.setEnabled(true);
+				btnChangeDestinationFolder.setEnabled(true);
+				if (!textDestinationPath.getText().equals(textSourcePath.getText())) {
+					btnUseSource.setEnabled(true);
+				}
+				btnGo.setText("GO");
+				btnGo.setForeground(new Color(0, 128, 0));
+				txtrWdwSft.setEditable(true);
 			}
 		});
 		
@@ -541,23 +565,22 @@ public class maingui {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				if (btnChangeDestinationFolder.isEnabled()) {
-					JFileChooser chooser = new JFileChooser();
+					JFileChooser chooser;
+					if (lastFinal2 != null) {
+						chooser = new JFileChooser(lastFinal2);
+					}
+					else {
+						chooser = new JFileChooser();
+					}
 					chooser.setFileSelectionMode( JFileChooser.DIRECTORIES_ONLY);
 					chooser.setDialogTitle("Folder Browser");
 					if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 						textDestinationPath.setText(chooser.getSelectedFile().getPath());
-						if (btnGo.isEnabled()) {
-							if (textDestinationPath.getText().equals(textSourcePath.getText())) {
-								btnUseSource.setEnabled(false);
-							}
-							else if (!(textDestinationPath.getText().equals(textSourcePath.getText()))) {
-								btnUseSource.setEnabled(true);
-							}
-						}
+						lastFinal2 = textDestinationPath.getText();
 						if (textDestinationPath.getText().equals(textSourcePath.getText())) {
 							btnUseSource.setEnabled(false);
 						}
-						else if (!(textDestinationPath.getText().equals(textSourcePath.getText()))) {
+						else if (!textDestinationPath.getText().equals(textSourcePath.getText())) {
 							btnUseSource.setEnabled(true);
 						}
 					}
