@@ -55,6 +55,8 @@ public class maingui {
 	private JTextField textDestinationPath;
 	private JButton btnGo;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
+	public String lastFinal;
+	public String lastFinal2;
 	
 	// Launch the application
 	public static void main(String[] args) {
@@ -456,11 +458,18 @@ public class maingui {
 		btnBrowse.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				JFileChooser chooser = new JFileChooser();
+				JFileChooser chooser;
+				if (lastFinal != null){
+					chooser = new JFileChooser(lastFinal);
+				}
+				else{
+					chooser = new JFileChooser();
+				}
 				chooser.setFileSelectionMode( JFileChooser.DIRECTORIES_ONLY);
 				chooser.setDialogTitle("Folder Browser");
 				if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 					textSourcePath.setText(chooser.getSelectedFile().getPath());
+					lastFinal = textSourcePath.getText();
 					if (!textSourcePath.getText().isEmpty()) {
 						if (rdbtnAlphanumerically.isEnabled() && !textDestinationPath.getText().isEmpty()) {
 							btnGo.setEnabled(true);
@@ -541,11 +550,18 @@ public class maingui {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				if (btnChangeDestinationFolder.isEnabled()) {
-					JFileChooser chooser = new JFileChooser();
+					JFileChooser chooser;
+					if (lastFinal2 != null){
+						chooser = new JFileChooser(lastFinal2);
+					}
+					else{
+						chooser = new JFileChooser();
+					}
 					chooser.setFileSelectionMode( JFileChooser.DIRECTORIES_ONLY);
 					chooser.setDialogTitle("Folder Browser");
 					if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 						textDestinationPath.setText(chooser.getSelectedFile().getPath());
+						lastFinal2 = textDestinationPath.getText();
 						if (btnGo.isEnabled()) {
 							if (textDestinationPath.getText().equals(textSourcePath.getText())) {
 								btnUseSource.setEnabled(false);
