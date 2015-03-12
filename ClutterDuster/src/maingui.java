@@ -298,11 +298,17 @@ public class maingui {
 			@Override
 			public void keyReleased(KeyEvent arg0) {
 				if (!textSourcePath.getText().isEmpty()) {
+					if (rdbtnAlphanumerically.isEnabled() && !textDestinationPath.getText().isEmpty()) {
+						btnGo.setEnabled(true);
+					}
 					lblChooseCriteria.setEnabled(true);
 					rdbtnAlphanumerically.setEnabled(true);
 					rdbtnDateCreated.setEnabled(true);
 					rdbtnFilzeSize.setEnabled(true);
 					rdbtnFileType.setEnabled(true);
+				}
+				else if (textSourcePath.getText().isEmpty()) {
+					btnGo.setEnabled(false);
 				}
 				if (btnGo.isEnabled()) {
 					if (textDestinationPath.getText().equals(textSourcePath.getText())) {
@@ -420,7 +426,7 @@ public class maingui {
 				if (textDestinationPath.getText().isEmpty()) {
 					btnGo.setEnabled(false);
 				}
-				else {
+				else if (!(textDestinationPath.getText().isEmpty() || textSourcePath.getText().isEmpty())) {
 					btnGo.setEnabled(true);
 				}
 			}
@@ -456,6 +462,9 @@ public class maingui {
 				if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 					textSourcePath.setText(chooser.getSelectedFile().getPath());
 					if (!textSourcePath.getText().isEmpty()) {
+						if (rdbtnAlphanumerically.isEnabled() && !textDestinationPath.getText().isEmpty()) {
+							btnGo.setEnabled(true);
+						}
 						lblChooseCriteria.setEnabled(true);
 						rdbtnAlphanumerically.setEnabled(true);
 						rdbtnDateCreated.setEnabled(true);
@@ -545,11 +554,17 @@ public class maingui {
 								btnUseSource.setEnabled(true);
 							}
 						}
+						if (textDestinationPath.getText().equals(textSourcePath.getText())) {
+							btnUseSource.setEnabled(false);
+						}
+						else if (!(textDestinationPath.getText().equals(textSourcePath.getText()))) {
+							btnUseSource.setEnabled(true);
+						}
 					}
 					if (textDestinationPath.getText().isEmpty()) {
 						btnGo.setEnabled(false);
 					}
-					else {
+					else if (!(textDestinationPath.getText().isEmpty() || textSourcePath.getText().isEmpty())) {
 						btnGo.setEnabled(true);
 					}
 				}
