@@ -46,6 +46,7 @@ import javax.swing.event.ChangeEvent;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.UUID;
 
 public class maingui {
 	
@@ -57,6 +58,8 @@ public class maingui {
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	public String lastFinal;
 	public String lastFinal2;
+	public Boolean isRunning = false;
+	Thread t;
 	
 	// Launch the application
 	public static void main(String[] args) {
@@ -501,48 +504,83 @@ public class maingui {
 					progressBar.setEnabled(true);
 					// ERROR CHECKING
 					
-					// DISABLE GUI AND CHANGE BUTTON TEXT
-					textSourcePath.setEnabled(false);
-					btnBrowse.setEnabled(false);
-					lblChooseCriteria.setEnabled(false);
-					rdbtnAlphanumerically.setEnabled(false);
-					rdbtnDateCreated.setEnabled(false);
-					rdbtnFilzeSize.setEnabled(false);
-					rdbtnFileType.setEnabled(false);
-					chckbxFolderGrouping.setEnabled(false);
-					lblFolderName.setEnabled(false);
-					textFolderName.setEnabled(false);
-					chckbxRetainOriginalFiles.setEnabled(false);
-					textDestinationPath.setEnabled(false);
-					btnChangeDestinationFolder.setEnabled(false);
-					btnUseSource.setEnabled(false);
-					btnGo.setText("ABORT");
-					btnGo.setForeground(Color.red);
-					txtrWdwSft.setText("");
-					txtrWdwSft.setEditable(false);
-					
-					// SIMULATION FOR DEMO
-					JOptionPane.showMessageDialog(null, "Yay!", "", JOptionPane.INFORMATION_MESSAGE);
-					
-					// ENABLE GUI AND CHANGE BUTTON TEXT
-					textSourcePath.setEnabled(true);
-					btnBrowse.setEnabled(true);
-					lblChooseCriteria.setEnabled(true);
-					rdbtnAlphanumerically.setEnabled(true);
-					rdbtnDateCreated.setEnabled(true);
-					rdbtnFilzeSize.setEnabled(true);
-					rdbtnFileType.setEnabled(true);
-					chckbxFolderGrouping.setEnabled(true);
-					lblFolderName.setEnabled(true);
-					textFolderName.setEnabled(true);
-					chckbxRetainOriginalFiles.setEnabled(true);
-					textDestinationPath.setEnabled(true);
-					btnChangeDestinationFolder.setEnabled(true);
-					btnUseSource.setEnabled(true);
-					btnGo.setText("GO");
-					btnGo.setForeground(new Color(0, 128, 0));
-					txtrWdwSft.setEditable(true);
+					try {
+						if(t.isAlive()){
+							t.interrupt();
+						}
+					} catch (Exception e2) {
+						
+					}
+					t = new Thread(new Runnable() {
+					    
+						public void run() {					    	
+							isRunning = true;
+					    	disable();
+							int i = 0;
+							while (i < 100){
+								i++;
+								progressBar.setValue(i);
+								txtrWdwSft.append(UUID.randomUUID().toString() + "\n");
+								txtrWdwSft.setCaretPosition(txtrWdwSft.getDocument().getLength());	// Auto Scroll
+								try {
+									Thread.sleep(70);
+								} catch (InterruptedException e) {
+									enable();
+									JOptionPane.showMessageDialog(null, "ABORTED!", "", JOptionPane.INFORMATION_MESSAGE);
+									isRunning = false;
+									return;
+								}
+							}
+							JOptionPane.showMessageDialog(null, "Yay!", "", JOptionPane.INFORMATION_MESSAGE);
+							// SIMULATION FOR DEMO
+							enable();
+							isRunning = false;
+					    }
+					}, "worker");
+					if (!isRunning)
+						t.start();
 				}
+			}
+			public void disable(){
+				// DISABLE GUI AND CHANGE BUTTON TEXT
+				textSourcePath.setEnabled(false);
+				btnBrowse.setEnabled(false);
+				lblChooseCriteria.setEnabled(false);
+				rdbtnAlphanumerically.setEnabled(false);
+				rdbtnDateCreated.setEnabled(false);
+				rdbtnFilzeSize.setEnabled(false);
+				rdbtnFileType.setEnabled(false);
+				chckbxFolderGrouping.setEnabled(false);
+				lblFolderName.setEnabled(false);
+				textFolderName.setEnabled(false);
+				chckbxRetainOriginalFiles.setEnabled(false);
+				textDestinationPath.setEnabled(false);
+				btnChangeDestinationFolder.setEnabled(false);
+				btnUseSource.setEnabled(false);
+				btnGo.setText("ABORT");
+				btnGo.setForeground(Color.red);
+				txtrWdwSft.setText("");
+				txtrWdwSft.setEditable(false);
+			}
+			public void enable(){
+				// ENABLE GUI AND CHANGE BUTTON TEXT
+				textSourcePath.setEnabled(true);
+				btnBrowse.setEnabled(true);
+				lblChooseCriteria.setEnabled(true);
+				rdbtnAlphanumerically.setEnabled(true);
+				rdbtnDateCreated.setEnabled(true);
+				rdbtnFilzeSize.setEnabled(true);
+				rdbtnFileType.setEnabled(true);
+				chckbxFolderGrouping.setEnabled(true);
+				lblFolderName.setEnabled(true);
+				textFolderName.setEnabled(true);
+				chckbxRetainOriginalFiles.setEnabled(true);
+				textDestinationPath.setEnabled(true);
+				btnChangeDestinationFolder.setEnabled(true);
+				btnUseSource.setEnabled(true);
+				btnGo.setText("GO");
+				btnGo.setForeground(new Color(0, 128, 0));
+				txtrWdwSft.setEditable(true);
 			}
 		});
 		
@@ -586,5 +624,7 @@ public class maingui {
 				}
 			}
 		});
+		
+		
 	}
 }
