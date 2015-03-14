@@ -46,6 +46,7 @@ import javax.swing.event.ChangeEvent;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class maingui {
@@ -477,6 +478,17 @@ public class maingui {
 					progressBar.setEnabled(true);
 					// ERROR CHECKING
 					
+					//Passing the settings
+					ArrayList<Object> settings = new ArrayList<Object>();
+					settings.add(chckbxFolderGrouping.isSelected());
+					settings.add(chckbxRetainOriginalFiles.isSelected());
+					settings.add(textSourcePath.getText());
+					settings.add(textDestinationPath.getText());
+					settings.add(textFolderName.getText());
+					
+					SortFiles sorter = new SortFiles(settings);
+					
+					//Runnable thread
 					try {
 						if (t.isAlive()) {
 							t.interrupt();

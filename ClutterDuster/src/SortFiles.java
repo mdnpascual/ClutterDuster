@@ -10,6 +10,20 @@ import org.apache.commons.io.output.*;
 
 public class SortFiles {
 	
+	Boolean isFolderGrouping = false;
+	Boolean isRetainFiles = false;
+	String sourcePath = "";
+	String destinationPath = "";
+	String folderName = "";
+	
+	public SortFiles(ArrayList<Object> Input){
+		isFolderGrouping = (Boolean)Input.get(0);
+		isRetainFiles = (Boolean)Input.get(1);
+		sourcePath = (String)Input.get(2);
+		destinationPath = (String)Input.get(3);
+		folderName = (String)Input.get(4);
+	}
+	
 	public void alphanumeric(List unsorted){
 		int i = 0;
 		while (i < unsorted.size()){
