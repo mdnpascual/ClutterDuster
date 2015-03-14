@@ -10,16 +10,6 @@ import org.apache.commons.io.output.*;
 
 public class SortFiles {
 	
-	//Modify file types here
-	public List<String> music = Arrays.asList("mp2", "mp3", "wav", "wma", "flac", "m4a", "aac", "ogg", "ofr", "ofs", "off", 
-								"aiff", "aifc", "aif", "wv", "tta", "vox", "m3u", "asx", "fpl");
-	public List<String> video = Arrays.asList("mp4", "mkv", "avi", "flv", "3gp", "3gpp", "wmv", "dat", "m1v", "m2v", "fla", 
-								"m4v", "mov", "mpg", "mpeg", "mpe", "rm", "swf", "bik");
-	public List<String> document = Arrays.asList("doc", "docm", "docx", "dot", "dotx", "epub", "log", "lwp", "mcw", "md", "nb", 
-								"nbp", "odm", "odt", "ott", "pdf", "rtf", "cvs", "txt", "xml", "wps", "wpt", "wrd");
-	public List<String> archives = Arrays.asList("7z", "bz2", "rar", "zip", "gz", "ezip", "ecab", "ipg", "lz", "lzh", "mpq", "par", "par2", "tar", "tgz", "iso", "img");
-	public List<String> executables = Arrays.asList("exe", "jar", "bat", "apk", "app", "com", "ipa");
-	
 	public void alphanumeric(List unsorted){
 		int i = 0;
 		while (i < unsorted.size()){
@@ -49,6 +39,16 @@ public class SortFiles {
 	}
 	
 	public void fileType(List unsorted){
+		//Modify file types here
+		List<String> music = Arrays.asList("mp2", "mp3", "wav", "wma", "flac", "m4a", "aac", "ogg", "ofr", "ofs", "off", 
+									"aiff", "aifc", "aif", "wv", "tta", "vox", "m3u", "asx", "fpl");
+		List<String> video = Arrays.asList("mp4", "mkv", "avi", "flv", "3gp", "3gpp", "wmv", "dat", "m1v", "m2v", "fla", 
+									"m4v", "mov", "mpg", "mpeg", "mpe", "rm", "swf", "bik");
+		List<String> document = Arrays.asList("doc", "docm", "docx", "dot", "dotx", "epub", "log", "lwp", "mcw", "md", "nb", 
+									"nbp", "odm", "odt", "ott", "pdf", "rtf", "cvs", "txt", "xml", "wps", "wpt", "wrd");
+		List<String> archives = Arrays.asList("7z", "bz2", "rar", "zip", "gz", "ezip", "ecab", "ipg", "lz", "lzh", "mpq", "par", "par2", "tar", "tgz", "iso", "img");
+		List<String> executables = Arrays.asList("exe", "jar", "bat", "apk", "app", "com", "ipa");
+		
 		int i = 0;
 		while (i < unsorted.size()){
 			String path = unsorted.get(i).toString();
@@ -74,14 +74,79 @@ public class SortFiles {
 			}
 			i++;
 		}
-		
 	}
 	
-	public void dateSort(List unsorted){
-		
+	public void dateSort(List unsorted, int type){
+		/*
+		 * Type:
+		 * 0 - Present - 1 week
+		 * 1 - 1 week - 1 month
+		 * 2 - 1 Month - 6 months
+		 * 3 - 6 Months - 1 year
+		 * 4 - > 1 year
+		 */
+		int i = 0;
+		while (i < unsorted.size()){
+			String path = unsorted.get(i).toString();
+			String ext = FilenameUtils.getExtension(path);
+			
+			//Sorting if sequence
+			if(type == 0){
+				//sort to Present - 1 week
+			}
+			else if(type == 1){
+				//sort to 1 week - 1 month
+			}
+			else if(type == 2){
+				//sort to 1 Month - 6 months
+			}
+			else if(type == 3){
+				//sort to 6 Months - 1 year
+			}
+			else if(type == 4){
+				//sort to > 1 year
+			}
+			else{
+				//ERROR
+			}
+			i++;
+		}
 	}
 	
-	public void sizeSort(List unsorted){
-		
+	public void sizeSort(List unsorted, int type){
+		/*
+		 * Type:
+		 * 0 - < 1MB
+		 * 1 - 1 MB - 10MB
+		 * 2 - 10MB - 100MB
+		 * 3 - 100MB - 1GB
+		 * 4 - > 1 GB
+		 */
+		int i = 0;
+		while (i < unsorted.size()){
+			String path = unsorted.get(i).toString();
+			String ext = FilenameUtils.getExtension(path);
+			
+			//Sorting if sequence
+			if(type == 0){
+				//sort to < 1MB
+			}
+			else if(type == 1){
+				//sort to 1 MB - 10MB
+			}
+			else if(type == 2){
+				//sort to 10MB - 100MB
+			}
+			else if(type == 3){
+				//sort to 100MB - 1GB
+			}
+			else if(type == 4){
+				//sort to > 1 GB
+			}
+			else{
+				//ERROR
+			}
+			i++;
+		}
 	}
 }
