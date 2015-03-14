@@ -12,26 +12,7 @@ import org.apache.commons.io.output.*;
 public class ClutterDuster {
 
 	public static void main(String[] args)throws IOException {
-		//FileFunctions sample usage #1
-		File usethis = new File("D:\\Downloads\\testsuite");
-		ListFiles execution = new ListFiles();
-		List results = execution.grabFileList(usethis);
-		System.out.println("breakpoint");
 		
-		//FileFunctions sample usage #2
-		ListFiles execution2 = new ListFiles(typeFilter(".docx"));
-		List results2 = execution2.grabFileList(usethis);
-		System.out.println("breakpoint");
-		
-		//FileFunctions sample usage #3
-		ListFiles execution3 = new ListFiles(dateFilter(100, false));
-		List results3 = execution3.grabFileList(usethis);
-		System.out.println("breakpoint");
-		
-		//FileFunctions sample usage #4
-		ListFiles execution4 = new ListFiles(sizeFilter((long)0, (long)1));
-		List results4 = execution4.grabFileList(usethis);
-		System.out.println("breakpoint");
 	}
 	
 	public static FileFilter typeFilter(String filetype){
