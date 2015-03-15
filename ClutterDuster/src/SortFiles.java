@@ -84,7 +84,7 @@ public class SortFiles {
 		
 		//Handle Folders in the Source Path here
 		if (results.size() != 0){
-			int j = 1;
+			int j = 0;
 			while (j < results.size()){
 				//FileUtils.copyDirectory(new File(unsorted.get(j).toString()), new File(destinationPath), true);		//Disabled for now
 				outputStatus = outputStatus.concat(results.get(j).toString() + " Folder >> " + destinationPath + " Folder\n");

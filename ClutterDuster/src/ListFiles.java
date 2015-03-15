@@ -19,11 +19,11 @@ public class ListFiles extends DirectoryWalker {
 	
 	public ListFiles(FileFilter filter) {
 		// Constructor for filtering
-		super(filter, 0);
+		super(filter, 1);
 	}
 	
 	public ListFiles(Boolean x) {
-		super();
+		super(FileFilterUtils.trueFileFilter(), 1);
 		folderOnly = x;
 	}
 	
