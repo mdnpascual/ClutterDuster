@@ -17,7 +17,7 @@ public class ListFiles extends DirectoryWalker {
 	
 	public ListFiles(FileFilter filter) {
 		// Constructor for filtering
-		super(filter, 1);
+		super(filter, 0);
 	}
 	
 	public List grabFileList(File startDirectory)throws IOException {

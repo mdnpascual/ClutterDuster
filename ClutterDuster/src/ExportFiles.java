@@ -15,6 +15,9 @@ public class ExportFiles {
 			//Path string DOESN'T end with slash
 			FileUtils.forceMkdir(new File(path + "\\" + folderName));
 		}
-		
+	}
+	
+	public void moveFile(String source, String destination) throws IOException{
+		FileUtils.copyFile(new File(source), new File(destination), true);
 	}
 }

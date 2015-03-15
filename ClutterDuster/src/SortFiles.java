@@ -15,9 +15,11 @@ public class SortFiles {
 	String sourcePath = "";
 	String destinationPath = "";
 	String folderName = "";
+	volatile String outputStatus = "";
+	volatile int percentage = 0;
+	volatile Boolean interrupted = false;
 	
 	public SortFiles(ArrayList<Object> Input){
-		isFolderGrouping = (Boolean)Input.get(0);
 		isRetainFiles = (Boolean)Input.get(1);
 		sourcePath = (String)Input.get(2);
 		destinationPath = (String)Input.get(3);
@@ -25,6 +27,9 @@ public class SortFiles {
 	}
 	
 	public void alphanumeric(List unsorted){
+		outputStatus = "";
+		percentage = 0;
+		interrupted = false;
 		int i = 0;
 		while (i < unsorted.size()){
 			String path = unsorted.get(i).toString();
@@ -37,19 +42,38 @@ public class SortFiles {
 				if ((filename.charAt(0) >= 'a' && filename.charAt(0) <= 'm') 
 			|| (filename.charAt(0) >= 'A' && filename.charAt(0) <= 'M')){
 					//A-M
+					outputStatus = outputStatus.concat(filename + " >> A-M\n");
 				}
 				else {
 					//N-Z
+					outputStatus = outputStatus.concat(filename + " >> N-Z\n");
 				}
 			}
 			else if (filename.charAt(0) >= '0' && filename.charAt(0) <= '9'){
 				//Digit check
+				outputStatus = outputStatus.concat(filename + " >> 0-9\n");
 			}
 			else{
 				//Unicode check
+				outputStatus = outputStatus.concat(filename + " >> Unicode\n");
 			}
 			i++;
+			percentage = (int)(((float)i/unsorted.size())*100);
+			if (interrupted == true){
+				break;
+			}
+			try {
+				Thread.sleep(5);
+			} catch (InterruptedException e) {
+				outputStatus = outputStatus.concat("Alphanumerical Sorting Aborted!\n");
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e1) {
+				}
+				return;
+			}
 		}
+		outputStatus = outputStatus.concat("Sorting Complete!");
 	}
 	
 	public void fileType(List unsorted){
@@ -87,6 +111,10 @@ public class SortFiles {
 				//sort to others
 			}
 			i++;
+			percentage = i/unsorted.size();
+			if (interrupted == false){
+				break;
+			}
 		}
 	}
 	
@@ -124,6 +152,10 @@ public class SortFiles {
 				//ERROR
 			}
 			i++;
+			percentage = i/unsorted.size();
+			if (interrupted == false){
+				break;
+			}
 		}
 	}
 	
@@ -161,6 +193,10 @@ public class SortFiles {
 				//ERROR
 			}
 			i++;
+			percentage = i/unsorted.size();
+			if (interrupted == false){
+				break;
+			}
 		}
 	}
 }

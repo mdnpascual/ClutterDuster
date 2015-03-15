@@ -46,7 +46,10 @@ import javax.swing.event.ChangeEvent;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class maingui {
@@ -60,7 +63,8 @@ public class maingui {
 	public String lastFinal;
 	public String lastFinal2;
 	public Boolean isRunning = false;
-	Thread t;
+	public Boolean isRunning2 = false;
+	Thread t, t2;
 	
 	// Launch the application
 	public static void main(String[] args) {
@@ -471,12 +475,36 @@ public class maingui {
 		
 		btnGo.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(MouseEvent e){
 				if (btnGo.isEnabled()) {
 					txtrWdwSft.setEnabled(true);
 					txtrWdwSft.setBackground(Color.white);
 					progressBar.setEnabled(true);
+					
 					// ERROR CHECKING
+					File ff = new File(textSourcePath.getText());
+					File fff = new File(textDestinationPath.getText());
+					if (!ff.exists()){
+						txtrWdwSft.append("Source Path Invalid\n");
+						return;
+					}
+					else if (!fff.exists()){
+						txtrWdwSft.append("Destination Path Invalid\n");
+						return;
+					}
+					
+					if(!ff.canRead()){
+						txtrWdwSft.append("Access Denied on Source Path\n");
+						return;
+					}
+					if(!fff.canRead()){
+						txtrWdwSft.append("Access Denied on Destination Path\n");
+						return;
+					}
+					if(!fff.canWrite()){
+						txtrWdwSft.append("Access Denied on Destination Path\n");
+						return;
+					}
 					
 					//Passing the settings
 					ArrayList<Object> settings = new ArrayList<Object>();
@@ -486,7 +514,7 @@ public class maingui {
 					settings.add(textDestinationPath.getText());
 					settings.add(textFolderName.getText());
 					
-					SortFiles sorter = new SortFiles(settings);
+					final SortFiles sorter = new SortFiles(settings);
 					
 					//Runnable thread
 					try {
@@ -501,20 +529,28 @@ public class maingui {
 						public void run() {					    	
 							isRunning = true;
 					    	disable();
+
 							int i = 0;
 							while (i < 100){
-								i++;
+								i = sorter.percentage;
 								progressBar.setValue(i);
-								txtrWdwSft.append(UUID.randomUUID().toString() + "\n");
+								txtrWdwSft.setText(sorter.outputStatus);
+								//txtrWdwSft.append(UUID.randomUUID().toString() + "\n");
 								txtrWdwSft.setCaretPosition(txtrWdwSft.getDocument().getLength());	// Auto Scroll
 								try {
-									Thread.sleep(70);
+									Thread.sleep(20);
 								} catch (InterruptedException e) {
+									try {
+										Thread.sleep(100);
+									} catch (InterruptedException e1) {
+									}
+									txtrWdwSft.setText(sorter.outputStatus);
 									enable();
 									isRunning = false;
 									return;
 								}
 							}
+							txtrWdwSft.setText(sorter.outputStatus);
 							enable();
 							isRunning = false;
 					    }
@@ -522,6 +558,47 @@ public class maingui {
 					if (!isRunning) {
 						t.start();
 					}
+					
+					//Sorter thread
+					try {
+						if (t2.isAlive()) {
+							sorter.interrupted = true;
+							t2.interrupt();
+						}
+					} catch (Exception e2) {
+						
+					}
+					t2 = new Thread(new Runnable() {
+						
+						public void run(){
+							isRunning2 = true;
+							if (rdbtnAlphanumerically.isSelected()){
+								File usethis = new File(textSourcePath.getText());
+								ListFiles execution = new ListFiles();
+								List results;
+								try {
+									results = execution.grabFileList(usethis);
+									sorter.alphanumeric(results);
+								} catch (IOException e) {
+									e.printStackTrace();
+								}
+					    	}
+					    	else if (rdbtnDateCreated.isSelected()){
+					    		
+					    	}
+					    	else if (rdbtnFilzeSize.isSelected()){
+					    		
+					    	}
+					    	else if (rdbtnFileType.isSelected()){
+					    		
+					    	}
+							isRunning2 = false;
+						}
+					}, "sorter");
+					if (!isRunning2) {
+						t2.start();
+					}
+					
 				}
 			}
 			
@@ -545,6 +622,7 @@ public class maingui {
 				btnGo.setForeground(Color.red);
 				txtrWdwSft.setText("");
 				txtrWdwSft.setEditable(false);
+				txtrWdwSft.setCaretPosition(txtrWdwSft.getDocument().getLength());
 			}
 			
 			public void enable() {
@@ -570,6 +648,7 @@ public class maingui {
 				btnGo.setText("GO");
 				btnGo.setForeground(new Color(0, 128, 0));
 				txtrWdwSft.setEditable(true);
+				txtrWdwSft.setCaretPosition(txtrWdwSft.getDocument().getLength());
 			}
 		});
 		
