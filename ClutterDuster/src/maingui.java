@@ -579,35 +579,35 @@ public class maingui {
 						
 						public void run(){
 							isRunning2 = true;
-							if (rdbtnAlphanumerically.isSelected()){
-								File usethis = new File(textSourcePath.getText());
-								ListFiles execution = new ListFiles();
-								List results;
-								try {
-									results = execution.grabFileList(usethis);		// No Filter
-									if (results.size() == 0){
-										// Source Folder has no files to sort
-										t.interrupt();
-										isRunning = false;
-										isRunning2 = false;
-										Thread.sleep(200);
-										txtrWdwSft.setText("No Files to be Sorted!");
-										return;
-									}
-									sorter.alphanumeric(results);
-								} catch (IOException e) {
-								} catch (InterruptedException e) {
+							File usethis = new File(textSourcePath.getText());
+							ListFiles execution = new ListFiles();
+							List results;
+							try {
+								results = execution.grabFileList(usethis);		// No Filter
+								if (results.size() == 0){
+									// Source Folder has no files to sort
+									t.interrupt();
+									isRunning = false;
+									isRunning2 = false;
+									Thread.sleep(200);
+									txtrWdwSft.setText("No Files to be Sorted!");
+									return;
 								}
-					    	}
-					    	else if (rdbtnDateCreated.isSelected()){
-					    		
-					    	}
-					    	else if (rdbtnFilzeSize.isSelected()){
-					    		
-					    	}
-					    	else if (rdbtnFileType.isSelected()){
-					    		
-					    	}
+								if (rdbtnAlphanumerically.isSelected()){
+									sorter.alphanumeric(results);
+						    	}
+								else if (rdbtnDateCreated.isSelected()){
+						    		sorter.dateSort(results);
+						    	}
+								else if (rdbtnFilzeSize.isSelected()){
+						    		sorter.sizeSort(results);
+						    	}
+								else if (rdbtnFileType.isSelected()){
+						    		sorter.fileType(results);
+						    	}
+							} catch (IOException e) {
+							} catch (InterruptedException e) {
+							}					    	
 							isRunning2 = false;
 						}
 					}, "sorter");

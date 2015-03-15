@@ -14,7 +14,7 @@ public class ListFiles extends DirectoryWalker {
 	
 	public ListFiles() {
 		// Default Constructor
-		super();
+		super(FileFilterUtils.trueFileFilter(), 1);
 	}
 	
 	public ListFiles(FileFilter filter) {
