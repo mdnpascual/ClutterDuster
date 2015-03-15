@@ -74,7 +74,8 @@ public class TEST_ClutterDuster {
 		String[] expected = {"D:\\Downloads\\testsuite\\11 Lips Are Movin.mp3", "D:\\Downloads\\testsuite\\Attachments_201533.zip", 
 							"D:\\Downloads\\testsuite\\HuniePop.xlsx", "D:\\Downloads\\testsuite\\HuniePopSaveData1.game", 
 							"D:\\Downloads\\testsuite\\OriginThinSetup.exe", "D:\\Downloads\\testsuite\\pdf.pdf", 
-							"D:\\Downloads\\testsuite\\platform.rar", "D:\\Downloads\\testsuite\\seng301-3.docx"};
+							"D:\\Downloads\\testsuite\\platform.rar", "D:\\Downloads\\testsuite\\seng301-3.docx", 
+							"D:\\Downloads\\testsuite\\ドラマー K-ON! Hokago Live!!.ISO"};
 		
 		File usethis = new File("D:\\Downloads\\testsuite");
 		ListFiles execution = new ListFiles(ClutterDuster.dateFilter(100, false));
@@ -117,6 +118,24 @@ public class TEST_ClutterDuster {
 		while (i < results.size()){
 			stringResults[i] = results.get(i).toString();
 			i++;
+		}
+		
+		assertArrayEquals(expected, stringResults);
+	}
+	
+	@Test
+	public void testFolderListing() throws IOException{
+		String[] expected = {"D:\\Downloads\\testsuite\\%^@%^#$%@#!!", "D:\\Downloads\\testsuite\\foldertest"};
+		
+		File usethis = new File("D:\\Downloads\\testsuite");
+		ListFiles execution = new ListFiles(true);
+		List results = execution.grabFileList(usethis);
+		String[] stringResults = new String[results.size()];
+		
+		int i = 0;
+		while (i < results.size()){
+		stringResults[i] = results.get(i).toString();
+		i++;
 		}
 		
 		assertArrayEquals(expected, stringResults);

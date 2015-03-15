@@ -8,6 +8,9 @@ import org.apache.commons.io.input.*;
 import org.apache.commons.io.monitor.*;
 import org.apache.commons.io.output.*;
 
+/*
+ * NOTE: LINE 89 IS DISABLED, HANDLES COPYING FOLDER INSIDE SOURCE FOLDER
+ */
 public class SortFiles {
 	
 	Boolean isFolderGrouping = false;
@@ -26,11 +29,16 @@ public class SortFiles {
 		folderName = (String)Input.get(4);
 	}
 	
-	public void alphanumeric(List unsorted){
+	public void alphanumeric(List unsorted) throws IOException{
 		outputStatus = "";
 		percentage = 0;
 		interrupted = false;
 		int i = 0;
+		
+		File usethis = new File(sourcePath);
+		ListFiles execution = new ListFiles(true);
+		List results = execution.grabFileList(usethis);
+				
 		while (i < unsorted.size()){
 			String path = unsorted.get(i).toString();
 			int parts = path.lastIndexOf("\\");
@@ -58,21 +66,46 @@ public class SortFiles {
 				outputStatus = outputStatus.concat(filename + " >> Unicode\n");
 			}
 			i++;
-			percentage = (int)(((float)i/unsorted.size())*100);
+			percentage = (int)(((float)i/(unsorted.size()+results.size()-1))*100);
 			if (interrupted == true){
 				break;
 			}
 			try {
-				Thread.sleep(5);
+				Thread.sleep(5);	// Pauses 5ms to get interrupt flag, expose percentage and output string
 			} catch (InterruptedException e) {
 				outputStatus = outputStatus.concat("Alphanumerical Sorting Aborted!\n");
 				try {
-					Thread.sleep(1000);
+					Thread.sleep(1000);	// Thread will stay alive for 1 second (Not sure what happens if User started new sort thread within 800ms)
 				} catch (InterruptedException e1) {
 				}
 				return;
 			}
 		}
+		
+		//Handle Folders in the Source Path here
+		if (results.size() != 0){
+			int j = 0;
+			while (j < results.size()){
+				//FileUtils.copyDirectory(new File(unsorted.get(j).toString()), new File(destinationPath), true);		//Disabled for now
+				outputStatus = outputStatus.concat(results.get(j).toString() + " Folder >> " + destinationPath + " Folder\n");
+				j++;i++;
+				percentage = (int)(((float)i/(unsorted.size()+results.size()-1))*100);
+				if (interrupted == true){
+					break;
+				}
+				try {
+					Thread.sleep(5);	// Pauses 5ms to get interrupt flag, expose percentage and output string
+				} catch (InterruptedException e) {
+					outputStatus = outputStatus.concat("Alphanumerical Sorting Aborted!\n");
+					try {
+						Thread.sleep(1000);	// Thread will stay alive for 1 second (Not sure what happens if User started new sort thread within 800ms)
+					} catch (InterruptedException e1) {
+					}
+					return;
+				}
+			}
+		}
+			
 		outputStatus = outputStatus.concat("Sorting Complete!");
 	}
 	

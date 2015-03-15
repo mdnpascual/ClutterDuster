@@ -20,4 +20,8 @@ public class ExportFiles {
 	public void moveFile(String source, String destination) throws IOException{
 		FileUtils.copyFile(new File(source), new File(destination), true);
 	}
+	
+	public void moveDirectory(){
+		//Implement ME
+	}
 }
