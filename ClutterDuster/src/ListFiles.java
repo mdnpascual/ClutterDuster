@@ -10,6 +10,8 @@ import org.apache.commons.io.output.*;
 
 public class ListFiles extends DirectoryWalker {
 	
+	public Boolean folderOnly = false;
+	
 	public ListFiles() {
 		// Default Constructor
 		super();
@@ -20,6 +22,11 @@ public class ListFiles extends DirectoryWalker {
 		super(filter, 0);
 	}
 	
+	public ListFiles(Boolean x) {
+		super();
+		folderOnly = x;
+	}
+	
 	public List grabFileList(File startDirectory)throws IOException {
 		// Initiate Directory Walker
 		List results = new ArrayList();
@@ -28,10 +35,13 @@ public class ListFiles extends DirectoryWalker {
 	}
 	
 	protected boolean handleDirectory(File directory, int depth, Collection results) {
+		if (folderOnly && depth == 1)
+			results.add(directory);
 		return true;
 	}
 
 	protected void handleFile(File file, int depth, Collection results) {
-		results.add(file);
+		if (depth == 1 && !folderOnly)		//Only Handle Depth 1 files
+			results.add(file);
 	}
 }
