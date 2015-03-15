@@ -481,7 +481,7 @@ public class maingui {
 					txtrWdwSft.setBackground(Color.white);
 					progressBar.setEnabled(true);
 					
-					// ERROR CHECKING
+					// -----------ERROR CHECKING-----------
 					File ff = new File(textSourcePath.getText());
 					File fff = new File(textDestinationPath.getText());
 					if (!ff.exists()){
@@ -505,8 +505,9 @@ public class maingui {
 						txtrWdwSft.append("Access Denied on Destination Path\n");
 						return;
 					}
+					// ---------ERROR CHECKING END---------
 					
-					//Passing the settings
+					//Passing the settings chosen
 					ArrayList<Object> settings = new ArrayList<Object>();
 					settings.add(chckbxFolderGrouping.isSelected());
 					settings.add(chckbxRetainOriginalFiles.isSelected());
@@ -514,9 +515,10 @@ public class maingui {
 					settings.add(textDestinationPath.getText());
 					settings.add(textFolderName.getText());
 					
+					//Initialize Sorter
 					final SortFiles sorter = new SortFiles(settings);
 					
-					//Runnable thread
+					//------------Runnable thread #1 - Makes GUI Responsive------------
 					try {
 						if (t.isAlive()) {
 							t.interrupt();
@@ -531,26 +533,31 @@ public class maingui {
 					    	disable();
 
 							int i = 0;
+							//While Percentage is less than 100%
 							while (i < 100){
-								i = sorter.percentage;
-								progressBar.setValue(i);
-								txtrWdwSft.setText(sorter.outputStatus);
-								//txtrWdwSft.append(UUID.randomUUID().toString() + "\n");
+								i = sorter.percentage;		// Gets percentage from sorter class, percentage variable is volatile
+								progressBar.setValue(i); 
+								txtrWdwSft.setText(sorter.outputStatus);		// Gets message from sorter class, outputStatus string is volatile
 								txtrWdwSft.setCaretPosition(txtrWdwSft.getDocument().getLength());	// Auto Scroll
 								try {
-									Thread.sleep(20);
+									Thread.sleep(20);		// Waits max 4 cycles theoretically of List files loop before updating
 								} catch (InterruptedException e) {
 									try {
-										Thread.sleep(100);
+										/* If aborted, waits 100ms to give time to:
+										 * 1) pass the interrupted flag to sorter class
+										 * 2) sorter class detects the flag
+										 * 3) sorter class to output the final string update
+										 */
+										Thread.sleep(100);	
 									} catch (InterruptedException e1) {
 									}
-									txtrWdwSft.setText(sorter.outputStatus);
+									txtrWdwSft.setText(sorter.outputStatus);	// Get final string update, Theoretical (1000ms - 100ms) response time window
 									enable();
 									isRunning = false;
 									return;
 								}
 							}
-							txtrWdwSft.setText(sorter.outputStatus);
+							txtrWdwSft.setText(sorter.outputStatus);	// Get final string update
 							enable();
 							isRunning = false;
 					    }
@@ -558,6 +565,7 @@ public class maingui {
 					if (!isRunning) {
 						t.start();
 					}
+					//--------Runnable thread #1 - Makes GUI Responsive END--------
 					
 					//Sorter thread
 					try {
@@ -565,33 +573,41 @@ public class maingui {
 							sorter.interrupted = true;
 							t2.interrupt();
 						}
-					} catch (Exception e2) {
-						
+					} catch (Exception e2) {	
 					}
 					t2 = new Thread(new Runnable() {
 						
 						public void run(){
 							isRunning2 = true;
-							if (rdbtnAlphanumerically.isSelected()){
-								File usethis = new File(textSourcePath.getText());
-								ListFiles execution = new ListFiles();
-								List results;
-								try {
-									results = execution.grabFileList(usethis);
-									sorter.alphanumeric(results);
-								} catch (IOException e) {
-									e.printStackTrace();
+							File usethis = new File(textSourcePath.getText());
+							ListFiles execution = new ListFiles();
+							List results;
+							try {
+								results = execution.grabFileList(usethis);		// No Filter
+								if (results.size() == 0){
+									// Source Folder has no files to sort
+									t.interrupt();
+									isRunning = false;
+									isRunning2 = false;
+									Thread.sleep(200);
+									txtrWdwSft.setText("No Files to be Sorted!");
+									return;
 								}
-					    	}
-					    	else if (rdbtnDateCreated.isSelected()){
-					    		
-					    	}
-					    	else if (rdbtnFilzeSize.isSelected()){
-					    		
-					    	}
-					    	else if (rdbtnFileType.isSelected()){
-					    		
-					    	}
+								if (rdbtnAlphanumerically.isSelected()){
+									sorter.alphanumeric(results);
+						    	}
+								else if (rdbtnDateCreated.isSelected()){
+						    		sorter.dateSort(results);
+						    	}
+								else if (rdbtnFilzeSize.isSelected()){
+						    		sorter.sizeSort(results);
+						    	}
+								else if (rdbtnFileType.isSelected()){
+						    		sorter.fileType(results);
+						    	}
+							} catch (IOException e) {
+							} catch (InterruptedException e) {
+							}					    	
 							isRunning2 = false;
 						}
 					}, "sorter");
