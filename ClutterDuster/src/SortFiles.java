@@ -66,20 +66,11 @@ public class SortFiles {
 				outputStatus = outputStatus.concat(filename + " >> Unicode\n");
 			}
 			i++;
-			percentage = (int)(((float)i/(unsorted.size()+results.size()-1))*100);
-			if (interrupted == true){
+			
+			if(update(i, unsorted.size(), results.size()) == 1)
 				break;
-			}
-			try {
-				Thread.sleep(5);	// Pauses 5ms to get interrupt flag, expose percentage and output string
-			} catch (InterruptedException e) {
-				outputStatus = outputStatus.concat("Alphanumerical Sorting Aborted!\n");
-				try {
-					Thread.sleep(1000);	// Thread will stay alive for 1 second (Not sure what happens if User started new sort thread within 800ms)
-				} catch (InterruptedException e1) {
-				}
+			else if (update(i, unsorted.size(), results.size()) == 2)
 				return;
-			}
 		}
 		
 		//Handle Folders in the Source Path here
@@ -89,20 +80,10 @@ public class SortFiles {
 				//FileUtils.copyDirectory(new File(unsorted.get(j).toString()), new File(destinationPath), true);		//Disabled for now
 				outputStatus = outputStatus.concat(results.get(j).toString() + " Folder >> " + destinationPath + " Folder\n");
 				j++;i++;
-				percentage = (int)(((float)i/(unsorted.size()+results.size()-1))*100);
-				if (interrupted == true){
+				if(update(i, unsorted.size(), results.size()) == 1)
 					break;
-				}
-				try {
-					Thread.sleep(5);	// Pauses 5ms to get interrupt flag, expose percentage and output string
-				} catch (InterruptedException e) {
-					outputStatus = outputStatus.concat("Alphanumerical Sorting Aborted!\n");
-					try {
-						Thread.sleep(1000);	// Thread will stay alive for 1 second (Not sure what happens if User started new sort thread within 800ms)
-					} catch (InterruptedException e1) {
-					}
+				else if (update(i, unsorted.size(), results.size()) == 2)
 					return;
-				}
 			}
 		}
 			
@@ -110,12 +91,18 @@ public class SortFiles {
 	}
 	
 	public void fileType(List unsorted) throws IOException{
+		
+		outputStatus = "";
+		percentage = 0;
+		interrupted = false;
 		//Modify file types here
-		List<String> music = Arrays.asList("mp2", "mp3", "wav", "wma", "flac", "m4a", "aac", "ogg", "ofr", "ofs", "off", 
-									"aiff", "aifc", "aif", "wv", "tta", "vox", "m3u", "asx", "fpl");
-		List<String> video = Arrays.asList("mp4", "mkv", "avi", "flv", "3gp", "3gpp", "wmv", "dat", "m1v", "m2v", "fla", 
-									"m4v", "mov", "mpg", "mpeg", "mpe", "rm", "swf", "bik");
-		List<String> images = Arrays.asList("jpg", "png", "gif", "psd", "bmp", "tiff", "tif");
+		List<String> music = Arrays.asList("aac", "act", "aifc", "aiff", "aimppl", "amr", "asx", "au", "awb", "dct", "dss", "dvf", "flac", 
+									"fpl", "gsm", "iklax", "ivs", "m3u", "m4a", "m4p", "mmf", "mp2", "mp3", "mpc", "msv", "off", "ofr", 
+									"ofs", "oga", "ogg", "opus", "pla", "ra", "tta", "tta", "vlc", "vox", "wav", "wma", "wpl", "wv");
+		List<String> video = Arrays.asList("3g2", "3gp", "asf", "avi", "bik", "f4v", "flv", "m2v", "m4v", "mkv", "mng", "mov", "mp2", "mp4", 
+									"mpe", "mpeg", "mpg", "mpv", "mxf", "nsv", "qt", "rm", "rmvb", "swf", "vob", "webm", "wmv", "yuv");
+		List<String> images = Arrays.asList("3dm", "3ds", "max", "obj", "bmp", "dds", "gif", "jpg", "png", "psd", "pspimage", "tga", "thm", 
+									"tif", "tiff", "ai", "eps", "ps", "svg");
 		List<String> document = Arrays.asList("doc", "docm", "docx", "dot", "dotx", "epub", "log", "lwp", "mcw", "md", "nb", 
 									"nbp", "odm", "odt", "ott", "pdf", "ppt", "pptx", "rtf", "cvs", "txt", "xls", "xlsx", "xml", "wps", "wpt", "wrd");
 		List<String> archives = Arrays.asList("7z", "bz2", "rar", "zip", "gz", "ezip", "ecab", "ipg", "lz", "lzh", "mpq", "par", "par2", "tar", "tgz", "iso", "img");
@@ -161,20 +148,10 @@ public class SortFiles {
 				outputStatus = outputStatus.concat(filename + " >> Others\n");
 			}
 			i++;
-			percentage = (int)(((float)i/(unsorted.size()+results.size()-1))*100);
-			if (interrupted == true){
+			if(update(i, unsorted.size(), results.size()) == 1)
 				break;
-			}
-			try {
-				Thread.sleep(5);	// Pauses 5ms to get interrupt flag, expose percentage and output string
-			} catch (InterruptedException e) {
-				outputStatus = outputStatus.concat("File Type Sorting Aborted!\n");
-				try {
-					Thread.sleep(1000);	// Thread will stay alive for 1 second (Not sure what happens if User started new sort thread within 800ms)
-				} catch (InterruptedException e1) {
-				}
+			else if (update(i, unsorted.size(), results.size()) == 2)
 				return;
-			}
 		}
 		
 		//Handle Folders in the Source Path here
@@ -184,66 +161,145 @@ public class SortFiles {
 				//FileUtils.copyDirectory(new File(unsorted.get(j).toString()), new File(destinationPath), true);		//Disabled for now
 				outputStatus = outputStatus.concat(results.get(j).toString() + " Folder >> " + destinationPath + " Folder\n");
 				j++;i++;
-				percentage = (int)(((float)i/(unsorted.size()+results.size()-1))*100);
-				if (interrupted == true){
+				if(update(i, unsorted.size(), results.size()) == 1)
 					break;
-				}
-				try {
-					Thread.sleep(5);	// Pauses 5ms to get interrupt flag, expose percentage and output string
-				} catch (InterruptedException e) {
-					outputStatus = outputStatus.concat("File Type Sorting Aborted!\n");
-					try {
-						Thread.sleep(1000);	// Thread will stay alive for 1 second (Not sure what happens if User started new sort thread within 800ms)
-					} catch (InterruptedException e1) {
-					}
+				else if (update(i, unsorted.size(), results.size()) == 2)
 					return;
-				}
 			}
 		}
 		
 		outputStatus = outputStatus.concat("Sorting Complete!");
 	}
 	
-	public void dateSort(List unsorted){
-		/*
-		 * Type:
-		 * 0 - Present - 1 week
-		 * 1 - 1 week - 1 month
-		 * 2 - 1 Month - 6 months
-		 * 3 - 6 Months - 1 year
-		 * 4 - > 1 year
-		 */
+	public void dateSort(List unsorted) throws IOException{
+		outputStatus = "";
+		percentage = 0;
+		interrupted = false;
 		int i = 0;
 		int type = 0;
+		
+		
+		/*
+		 * Initialize list for:
+		 * 1) Folder list inside source path
+		 * 2) 5 Date filters
+		 */
+		File usethis = new File(sourcePath);
+		ListFiles execution = new ListFiles(true);
+		List results = execution.grabFileList(usethis);
+		if (update(i, unsorted.size(), results.size()) > 0)
+			return;
+		ListFiles listpto7 = new ListFiles(ClutterDuster.dateFilter(7, false));
+		List getpto7 = listpto7.grabFileList(usethis);
+		if (update(i, unsorted.size(), results.size()) > 0)
+			return;
+		ListFiles list7to31 = new ListFiles(ClutterDuster.dateFilter(7, 31));
+		List get7to31 = list7to31.grabFileList(usethis);
+		if (update(i, unsorted.size(), results.size()) > 0)
+			return;
+		ListFiles list1to6 = new ListFiles(ClutterDuster.dateFilter(31, 183));
+		List get1to6 = list1to6.grabFileList(usethis);
+		if (update(i, unsorted.size(), results.size()) > 0)
+			return;
+		ListFiles list6to1 = new ListFiles(ClutterDuster.dateFilter(183, 365));
+		List get6to1 = list6to1.grabFileList(usethis);
+		if (update(i, unsorted.size(), results.size()) > 0)
+			return;
+		ListFiles list1over = new ListFiles(ClutterDuster.dateFilter(365, true));
+		List get1over = list1over.grabFileList(usethis);
+		if (update(i, unsorted.size(), results.size()) > 0)
+			return;
+		
+		// Start sorting loop for dateSort
 		while (i < unsorted.size()){
-			String path = unsorted.get(i).toString();
-			String ext = FilenameUtils.getExtension(path);
-			
-			//Sorting if sequence
-			if(type == 0){
+			int j = 0;
+			while(j < getpto7.size()){
+				if(update(i, unsorted.size(), results.size()) == 1)
+					break;
+				else if (update(i, unsorted.size(), results.size()) == 2)
+					return;
+				
+				String path = getpto7.get(j).toString();
+				int parts = path.lastIndexOf("\\");
+				String filename = path.substring(parts+1);
 				//sort to Present - 1 week
+				outputStatus = outputStatus.concat(filename + " >> Present - 7 Days\n");
+				i++;j++;
+				
 			}
-			else if(type == 1){
+			j = 0;
+			while(j < get7to31.size()){
+				if(update(i, unsorted.size(), results.size()) == 1)
+					break;
+				else if (update(i, unsorted.size(), results.size()) == 2)
+					return;
+				
+				String path = get7to31.get(j).toString();
+				int parts = path.lastIndexOf("\\");
+				String filename = path.substring(parts+1);
 				//sort to 1 week - 1 month
+				outputStatus = outputStatus.concat(filename + " >> 1 Week - 1 Month\n");
+				i++;j++;
 			}
-			else if(type == 2){
+			j = 0;
+			while(j < get1to6.size()){
+				if(update(i, unsorted.size(), results.size()) == 1)
+					break;
+				else if (update(i, unsorted.size(), results.size()) == 2)
+					return;
+				
+				String path = get1to6.get(j).toString();
+				int parts = path.lastIndexOf("\\");
+				String filename = path.substring(parts+1);
 				//sort to 1 Month - 6 months
+				outputStatus = outputStatus.concat(filename + " >> 1 Month - 6 Months\n");
+				i++;j++;
 			}
-			else if(type == 3){
+			j = 0;
+			while(j < get6to1.size()){
+				if(update(i, unsorted.size(), results.size()) == 1)
+					break;
+				else if (update(i, unsorted.size(), results.size()) == 2)
+					return;
+				
+				String path = get6to1.get(j).toString();
+				int parts = path.lastIndexOf("\\");
+				String filename = path.substring(parts+1);
 				//sort to 6 Months - 1 year
+				outputStatus = outputStatus.concat(filename + " >> 6 Months - 1 Year\n");
+				i++;j++;
 			}
-			else if(type == 4){
+			j = 0;
+			while(j < get1over.size()){
+				if(update(i, unsorted.size(), results.size()) == 1)
+					break;
+				else if (update(i, unsorted.size(), results.size()) == 2)
+					return;
+				
+				String path = get1over.get(j).toString();
+				int parts = path.lastIndexOf("\\");
+				String filename = path.substring(parts+1);
 				//sort to > 1 year
-			}
-			else{
-				//ERROR
-			}
-			i++;
-			percentage = i/unsorted.size();
-			if (interrupted == false){
-				break;
+				outputStatus = outputStatus.concat(filename + " >> 1 Year and Older\n");
+				i++;j++;
 			}
 		}
+		
+		//Handle Folders in the Source Path here
+				if (results.size() != 0){
+					int j = 0;
+					while (j < results.size()){
+						//FileUtils.copyDirectory(new File(unsorted.get(j).toString()), new File(destinationPath), true);		//Disabled for now
+						outputStatus = outputStatus.concat(results.get(j).toString() + " Folder >> " + destinationPath + " Folder\n");
+						j++;i++;
+						if(update(i, unsorted.size(), results.size()) == 1)
+							break;
+						else if (update(i, unsorted.size(), results.size()) == 2)
+							return;
+					}
+				}
+				
+		outputStatus = outputStatus.concat("Sorting Complete!");
 	}
 	
 	public void sizeSort(List unsorted){
@@ -286,5 +342,24 @@ public class SortFiles {
 				break;
 			}
 		}
+	}
+	
+	public int update(int i, int unsortedSize, int resultsSize){
+		//Updater
+		percentage = (int)(((float)i/(unsortedSize+resultsSize-1))*100);
+		if (interrupted == true){
+			return 1;
+		}
+		try {
+			Thread.sleep(5);	// Pauses 5ms to get interrupt flag, expose percentage and output string
+		} catch (InterruptedException e) {
+			outputStatus = outputStatus.concat("Alphanumerical Sorting Aborted!\n");
+			try {
+				Thread.sleep(1000);	// Thread will stay alive for 1 second (Not sure what happens if User started new sort thread within 800ms)
+			} catch (InterruptedException e1) {
+			}
+			return 2;
+		}
+		return 0;
 	}
 }

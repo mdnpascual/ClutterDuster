@@ -26,6 +26,14 @@ public class ClutterDuster {
 		FileFilter fooDirFilter = FileFilterUtils.ageFileFilter(new Date(date.getTime()-(t7Days.getTime()*days)), olderInstead);
 		return fooDirFilter;
 	}
+	public static FileFilter dateFilter(int startDays, int endDays){
+		Date date = new Date();
+		Time t7Days = Time.valueOf("24:00:00");
+		FileFilter fooDirFilter = FileFilterUtils.ageFileFilter(new Date(date.getTime()-(t7Days.getTime()*startDays)), true);
+		FileFilter fooDirFilter2 = FileFilterUtils.ageFileFilter(new Date(date.getTime()-(t7Days.getTime()*endDays)), false);
+		FileFilter fooDirFilter3 = FileFilterUtils.andFileFilter((IOFileFilter)fooDirFilter, (IOFileFilter)fooDirFilter2);
+		return fooDirFilter3;
+	}
 	//Size Filter
 	public static FileFilter sizeFilter(long minMB, long maxMB){
 		FileFilter fooDirFilter = FileFilterUtils.sizeRangeFileFilter(minMB*1048576, maxMB*1048576);
