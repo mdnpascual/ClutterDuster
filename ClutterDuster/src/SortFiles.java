@@ -353,10 +353,12 @@ public class SortFiles {
 		try {
 			Thread.sleep(5);	// Pauses 5ms to get interrupt flag, expose percentage and output string
 		} catch (InterruptedException e) {
-			outputStatus = outputStatus.concat("Alphanumerical Sorting Aborted!\n");
+			StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+			outputStatus = outputStatus.concat(stackTraceElements[2].getMethodName() + " Sorting Aborted!\n");
 			try {
-				Thread.sleep(1000);	// Thread will stay alive for 1 second (Not sure what happens if User started new sort thread within 800ms)
+				Thread.sleep(300);	// Thread will stay alive for 1 second (Not sure what happens if User started new sort thread within 800ms)
 			} catch (InterruptedException e1) {
+				return 2;
 			}
 			return 2;
 		}

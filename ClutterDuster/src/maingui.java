@@ -521,6 +521,7 @@ public class maingui {
 					//------------Runnable thread #1 - Makes GUI Responsive------------
 					try {
 						if (t.isAlive()) {
+							t2.interrupt();
 							t.interrupt();
 						}
 					} catch (Exception e2) {
@@ -554,6 +555,7 @@ public class maingui {
 									txtrWdwSft.setText(sorter.outputStatus);	// Get final string update, Theoretical (1000ms - 100ms) response time window
 									enable();
 									isRunning = false;
+									isRunning2 = false;
 									return;
 								}
 							}
@@ -607,7 +609,7 @@ public class maingui {
 						    	}
 							} catch (IOException e) {
 							} catch (InterruptedException e) {
-							}					    	
+							}
 							isRunning2 = false;
 						}
 					}, "sorter");
