@@ -30,9 +30,6 @@ public class SortFiles {
 	}
 	
 	public void alphanumeric(List unsorted) throws IOException{
-		outputStatus = "";
-		percentage = 0;
-		interrupted = false;
 		int i = 0;
 		
 		File usethis = new File(sourcePath);
@@ -91,10 +88,7 @@ public class SortFiles {
 	}
 	
 	public void fileType(List unsorted) throws IOException{
-		
-		outputStatus = "";
-		percentage = 0;
-		interrupted = false;
+
 		//Modify file types here
 		List<String> music = Arrays.asList("aac", "act", "aifc", "aiff", "aimppl", "amr", "asx", "au", "awb", "dct", "dss", "dvf", "flac", 
 									"fpl", "gsm", "iklax", "ivs", "m3u", "m4a", "m4p", "mmf", "mp2", "mp3", "mpc", "msv", "off", "ofr", 
@@ -172,12 +166,7 @@ public class SortFiles {
 	}
 	
 	public void dateSort(List unsorted) throws IOException{
-		outputStatus = "";
-		percentage = 0;
-		interrupted = false;
 		int i = 0;
-		int type = 0;
-		
 		
 		/*
 		 * Initialize list for:
@@ -187,36 +176,36 @@ public class SortFiles {
 		File usethis = new File(sourcePath);
 		ListFiles execution = new ListFiles(true);
 		List results = execution.grabFileList(usethis);
-		if (update(i, unsorted.size(), results.size()) > 0)
+		if (update(1, unsorted.size(), results.size()+6) > 0)
 			return;
 		ListFiles listpto7 = new ListFiles(ClutterDuster.dateFilter(7, false));
 		List getpto7 = listpto7.grabFileList(usethis);
-		if (update(i, unsorted.size(), results.size()) > 0)
+		if (update(2, unsorted.size(), results.size()+6) > 0)
 			return;
 		ListFiles list7to31 = new ListFiles(ClutterDuster.dateFilter(7, 31));
 		List get7to31 = list7to31.grabFileList(usethis);
-		if (update(i, unsorted.size(), results.size()) > 0)
+		if (update(3, unsorted.size(), results.size()+6) > 0)
 			return;
 		ListFiles list1to6 = new ListFiles(ClutterDuster.dateFilter(31, 183));
 		List get1to6 = list1to6.grabFileList(usethis);
-		if (update(i, unsorted.size(), results.size()) > 0)
+		if (update(4, unsorted.size(), results.size()+6) > 0)
 			return;
 		ListFiles list6to1 = new ListFiles(ClutterDuster.dateFilter(183, 365));
 		List get6to1 = list6to1.grabFileList(usethis);
-		if (update(i, unsorted.size(), results.size()) > 0)
+		if (update(5, unsorted.size(), results.size()+6) > 0)
 			return;
 		ListFiles list1over = new ListFiles(ClutterDuster.dateFilter(365, true));
 		List get1over = list1over.grabFileList(usethis);
-		if (update(i, unsorted.size(), results.size()) > 0)
+		if (update(6, unsorted.size(), results.size()+6) > 0)
 			return;
 		
 		// Start sorting loop for dateSort
 		while (i < unsorted.size()){
 			int j = 0;
 			while(j < getpto7.size()){
-				if(update(i, unsorted.size(), results.size()) == 1)
+				if(update(i+6, unsorted.size(), results.size()+6) == 1)
 					break;
-				else if (update(i, unsorted.size(), results.size()) == 2)
+				else if (update(i+6, unsorted.size(), results.size()+6) == 2)
 					return;
 				
 				String path = getpto7.get(j).toString();
@@ -229,9 +218,9 @@ public class SortFiles {
 			}
 			j = 0;
 			while(j < get7to31.size()){
-				if(update(i, unsorted.size(), results.size()) == 1)
+				if(update(i+6, unsorted.size(), results.size()+6) == 1)
 					break;
-				else if (update(i, unsorted.size(), results.size()) == 2)
+				else if (update(i+6, unsorted.size(), results.size()+6) == 2)
 					return;
 				
 				String path = get7to31.get(j).toString();
@@ -243,9 +232,9 @@ public class SortFiles {
 			}
 			j = 0;
 			while(j < get1to6.size()){
-				if(update(i, unsorted.size(), results.size()) == 1)
+				if(update(i+6, unsorted.size(), results.size()+6) == 1)
 					break;
-				else if (update(i, unsorted.size(), results.size()) == 2)
+				else if (update(i+6, unsorted.size(), results.size()+6) == 2)
 					return;
 				
 				String path = get1to6.get(j).toString();
@@ -257,9 +246,9 @@ public class SortFiles {
 			}
 			j = 0;
 			while(j < get6to1.size()){
-				if(update(i, unsorted.size(), results.size()) == 1)
+				if(update(i+6, unsorted.size(), results.size()+6) == 1)
 					break;
-				else if (update(i, unsorted.size(), results.size()) == 2)
+				else if (update(i+6, unsorted.size(), results.size()+6) == 2)
 					return;
 				
 				String path = get6to1.get(j).toString();
@@ -271,9 +260,9 @@ public class SortFiles {
 			}
 			j = 0;
 			while(j < get1over.size()){
-				if(update(i, unsorted.size(), results.size()) == 1)
+				if(update(i+6, unsorted.size(), results.size()+6) == 1)
 					break;
-				else if (update(i, unsorted.size(), results.size()) == 2)
+				else if (update(i+6, unsorted.size(), results.size()+6) == 2)
 					return;
 				
 				String path = get1over.get(j).toString();
@@ -292,9 +281,9 @@ public class SortFiles {
 						//FileUtils.copyDirectory(new File(unsorted.get(j).toString()), new File(destinationPath), true);		//Disabled for now
 						outputStatus = outputStatus.concat(results.get(j).toString() + " Folder >> " + destinationPath + " Folder\n");
 						j++;i++;
-						if(update(i, unsorted.size(), results.size()) == 1)
+						if(update(i+6, unsorted.size(), results.size()+6) == 1)
 							break;
-						else if (update(i, unsorted.size(), results.size()) == 2)
+						else if (update(i+6, unsorted.size(), results.size()+6) == 2)
 							return;
 					}
 				}
@@ -302,46 +291,124 @@ public class SortFiles {
 		outputStatus = outputStatus.concat("Sorting Complete!");
 	}
 	
-	public void sizeSort(List unsorted){
-		/*
-		 * Type:
-		 * 0 - < 1MB
-		 * 1 - 1 MB - 10MB
-		 * 2 - 10MB - 100MB
-		 * 3 - 100MB - 1GB
-		 * 4 - > 1 GB
-		 */
+	public void sizeSort(List unsorted) throws IOException{
 		int i = 0;
 		int type = 0;
+		
+		File usethis = new File(sourcePath);
+		ListFiles execution = new ListFiles(true);
+		List results = execution.grabFileList(usethis);
+		if (update(1, unsorted.size(), results.size()+6) > 0)
+			return;
+		ListFiles list0to1 = new ListFiles(ClutterDuster.sizeFilter((long)0, (long)1));
+		List get0to1 = list0to1.grabFileList(usethis);
+		if (update(2, unsorted.size(), results.size()+6) > 0)
+			return;
+		ListFiles list1to10 = new ListFiles(ClutterDuster.sizeFilter((long)1, (long)10));
+		List get1to10 = list1to10.grabFileList(usethis);
+		if (update(3, unsorted.size(), results.size()+6) > 0)
+			return;
+		ListFiles list10to100 = new ListFiles(ClutterDuster.sizeFilter((long)10, (long)100));
+		List get10to100 = list10to100.grabFileList(usethis);
+		if (update(4, unsorted.size(), results.size()+6) > 0)
+			return;
+		ListFiles list100to1 = new ListFiles(ClutterDuster.sizeFilter((long)100, (long)1000));
+		List get100to1 = list100to1.grabFileList(usethis);
+		if (update(5, unsorted.size(), results.size()+6) > 0)
+			return;
+		ListFiles list1000over = new ListFiles(ClutterDuster.sizeFilter((long)1000, true));
+		List get1000over = list1000over.grabFileList(usethis);
+		if (update(6, unsorted.size(), results.size()+6) > 0)
+			return;
+		
 		while (i < unsorted.size()){
-			String path = unsorted.get(i).toString();
-			String ext = FilenameUtils.getExtension(path);
-			
-			//Sorting if sequence
-			if(type == 0){
+			int j = 0;
+			while(j < get0to1.size()){
+				if(update(i+6, unsorted.size(), results.size()+6) == 1)
+					break;
+				else if (update(i+6, unsorted.size(), results.size()+6) == 2)
+					return;
+				
+				String path = get0to1.get(j).toString();
+				int parts = path.lastIndexOf("\\");
+				String filename = path.substring(parts+1);
 				//sort to < 1MB
+				outputStatus = outputStatus.concat(filename + " >> Less than 1MB\n");
+				i++;j++;
 			}
-			else if(type == 1){
-				//sort to 1 MB - 10MB
+			j = 0;
+			while(j < get1to10.size()){
+				if(update(i+6, unsorted.size(), results.size()+6) == 1)
+					break;
+				else if (update(i+6, unsorted.size(), results.size()+6) == 2)
+					return;
+				
+				String path = get1to10.get(j).toString();
+				int parts = path.lastIndexOf("\\");
+				String filename = path.substring(parts+1);
+				//sort to 1 - 10MB
+				outputStatus = outputStatus.concat(filename + " >> 1 - 10MB\n");
+				i++;j++;
 			}
-			else if(type == 2){
-				//sort to 10MB - 100MB
+			j = 0;
+			while(j < get10to100.size()){
+				if(update(i+6, unsorted.size(), results.size()+6) == 1)
+					break;
+				else if (update(i+6, unsorted.size(), results.size()+6) == 2)
+					return;
+				
+				String path = get10to100.get(j).toString();
+				int parts = path.lastIndexOf("\\");
+				String filename = path.substring(parts+1);
+				//sort to 10 - 100MB
+				outputStatus = outputStatus.concat(filename + " >> 10 - 100MB\n");
+				i++;j++;
 			}
-			else if(type == 3){
+			j = 0;
+			while(j < get100to1.size()){
+				if(update(i+6, unsorted.size(), results.size()+6) == 1)
+					break;
+				else if (update(i+6, unsorted.size(), results.size()+6) == 2)
+					return;
+				
+				String path = get100to1.get(j).toString();
+				int parts = path.lastIndexOf("\\");
+				String filename = path.substring(parts+1);
 				//sort to 100MB - 1GB
+				outputStatus = outputStatus.concat(filename + " >> 100MB - 1GB\n");
+				i++;j++;
 			}
-			else if(type == 4){
-				//sort to > 1 GB
-			}
-			else{
-				//ERROR
-			}
-			i++;
-			percentage = i/unsorted.size();
-			if (interrupted == false){
-				break;
+			j = 0;
+			while(j < get1000over.size()){
+				if(update(i+6, unsorted.size(), results.size()+6) == 1)
+					break;
+				else if (update(i+6, unsorted.size(), results.size()+6) == 2)
+					return;
+				
+				String path = get1000over.get(j).toString();
+				int parts = path.lastIndexOf("\\");
+				String filename = path.substring(parts+1);
+				//sort to > 1GB
+				outputStatus = outputStatus.concat(filename + " >> Greater than 1GB\n");
+				i++;j++;
+			}	
+		}
+		
+		//Handle Folders in the Source Path here
+		if (results.size() != 0){
+			int j = 0;
+			while (j < results.size()){
+				//FileUtils.copyDirectory(new File(unsorted.get(j).toString()), new File(destinationPath), true);		//Disabled for now
+				outputStatus = outputStatus.concat(results.get(j).toString() + " Folder >> " + destinationPath + " Folder\n");
+				j++;i++;
+				if(update(i+6, unsorted.size(), results.size()+6) == 1)
+					break;
+				else if (update(i+6, unsorted.size(), results.size()+6) == 2)
+					return;
 			}
 		}
+		
+		outputStatus = outputStatus.concat("Sorting Complete!");
 	}
 	
 	public int update(int i, int unsortedSize, int resultsSize){

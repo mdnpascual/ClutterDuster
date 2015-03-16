@@ -39,4 +39,8 @@ public class ClutterDuster {
 		FileFilter fooDirFilter = FileFilterUtils.sizeRangeFileFilter(minMB*1048576, maxMB*1048576);
 		return fooDirFilter;
 	}
+	public static FileFilter sizeFilter(long maxMB, Boolean choice){
+		FileFilter fooDirFilter = FileFilterUtils.sizeFileFilter(maxMB*1048576, true);
+		return fooDirFilter;
+	}
 }
