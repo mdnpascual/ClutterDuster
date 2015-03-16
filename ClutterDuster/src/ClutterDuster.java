@@ -11,9 +11,6 @@ import org.apache.commons.io.output.*;
 
 public class ClutterDuster {
 
-	public static void main(String[] args)throws IOException {
-		
-	}
 	//FileType Filter
 	public static FileFilter typeFilter(String filetype){
 		FileFilter fooDirFilter = FileFilterUtils.suffixFileFilter(filetype);
@@ -37,6 +34,10 @@ public class ClutterDuster {
 	//Size Filter
 	public static FileFilter sizeFilter(long minMB, long maxMB){
 		FileFilter fooDirFilter = FileFilterUtils.sizeRangeFileFilter(minMB*1048576, maxMB*1048576);
+		return fooDirFilter;
+	}
+	public static FileFilter sizeFilter(long maxMB, Boolean choice){
+		FileFilter fooDirFilter = FileFilterUtils.sizeFileFilter(maxMB*1048576, true);
 		return fooDirFilter;
 	}
 }

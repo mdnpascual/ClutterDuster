@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -90,6 +91,25 @@ public class TEST_ClutterDuster {
 		
 		assertArrayEquals(expected, stringResults);
 	}
+	
+	@Test
+	public void testDateFilter2() throws IOException{
+		
+		String[] expected = {"D:\\Downloads\\testsuite\\11 Lips Are Movin.mp3", "D:\\Downloads\\testsuite\\hamcrest-core-1.3.jar", "D:\\Downloads\\testsuite\\junit-4.11.jar"};
+		
+		File usethis = new File("D:\\Downloads\\testsuite");
+		ListFiles execution = new ListFiles(ClutterDuster.dateFilter(31, 183));
+		List results = execution.grabFileList(usethis);
+		String[] stringResults = new String[results.size()];
+		
+		int i = 0;
+		while (i < results.size()){
+			stringResults[i] = results.get(i).toString();
+			i++;
+		}
+		
+		assertArrayEquals(expected, stringResults);
+	}
 
 	@Test
 	public void testSizeFilter() throws IOException{
@@ -124,6 +144,30 @@ public class TEST_ClutterDuster {
 	}
 	
 	@Test
+	public void testSizeFilter2() throws IOException{
+		
+		String[] expected = {"D:\\Downloads\\testsuite\\%SteamSetup.exe", "D:\\Downloads\\testsuite\\&ProcessExplorer.zip", 
+							"D:\\Downloads\\testsuite\\-AcousticBridge_trial.exe", "D:\\Downloads\\testsuite\\11 Lips Are Movin.mp3", 
+							"D:\\Downloads\\testsuite\\Attachments_201533.zip", "D:\\Downloads\\testsuite\\MDuh logo final.mp4", 
+							"D:\\Downloads\\testsuite\\OriginThinSetup.exe", "D:\\Downloads\\testsuite\\platform.rar", 
+							"D:\\Downloads\\testsuite\\seng301-3.docx", "D:\\Downloads\\testsuite\\streaming_client 2014-05-22 08-58-10-70.png", 
+							"D:\\Downloads\\testsuite\\ドラマー K-ON! Hokago Live!!.ISO"};
+
+		File usethis = new File("D:\\Downloads\\testsuite");
+		ListFiles execution = new ListFiles(ClutterDuster.sizeFilter((long)1, false));
+		List results = execution.grabFileList(usethis);
+		String[] stringResults = new String[results.size()];
+		
+		int i = 0;
+		while (i < results.size()){
+			stringResults[i] = results.get(i).toString();
+			i++;
+		}
+		
+		assertArrayEquals(expected, stringResults);
+	}
+	
+	@Test
 	public void testFolderListing() throws IOException{
 		String[] expected = {"D:\\Downloads\\testsuite\\%^@%^#$%@#!!", "D:\\Downloads\\testsuite\\foldertest"};
 		
@@ -139,6 +183,81 @@ public class TEST_ClutterDuster {
 		}
 		
 		assertArrayEquals(expected, stringResults);
+	}
+	
+	@Test
+	public void testNewFolder() throws IOException{
+		ExportFiles execution = new ExportFiles();
+		File ff = new File("D:\\Downloads\\testsuite\\tester");
+		if (ff.exists()){
+			FileUtils.deleteDirectory(ff);
+			fail();
+		}
+		execution.newFolder("D:\\Downloads\\testsuite", "tester");
+		if (!ff.exists()){
+			fail();
+		}
+		FileUtils.deleteDirectory(ff);
+		if (ff.exists()){
+			fail();
+		}
+	}
+	
+	@Test
+	public void testNewFolder2() throws IOException{
+		ExportFiles execution = new ExportFiles();
+		File ff = new File("D:\\Downloads\\testsuite\\tester");
+		if (ff.exists()){
+			fail();
+		}
+		execution.newFolder("D:\\Downloads\\testsuite\\", "tester");
+		if (!ff.exists()){
+			fail();
+		}
+		FileUtils.deleteDirectory(ff);
+		if (ff.exists()){
+			fail();
+		}
+	}
+	
+	@Test
+	public void testExportFile() throws IOException{
+		ExportFiles execution = new ExportFiles();
+		String source = "D:\\Downloads\\testsuite\\OriginThinSetup.exe";
+		File ff = new File("D:\\Downloads\\testsuite\\tester");
+		if (ff.exists()){
+			fail();
+		}
+		execution.moveFile(source, ff.toString());
+		
+		File results = new File("D:\\Downloads\\testsuite\\tester\\OriginThinSetup.exe");
+		if(!results.exists()){
+			fail();
+		}
+		FileUtils.deleteDirectory(ff);
+		if (ff.exists()){
+			fail();
+		}
+	}
+	
+	@Test
+	public void testExportFile2() throws IOException{
+		ExportFiles execution = new ExportFiles();
+		String source = "D:\\Downloads\\testsuite\\OriginThinSetup.exe";
+		File ff = new File("D:\\Downloads\\testsuite\\tester");
+		if (ff.exists()){
+			fail();
+		}
+		execution.moveFile(source, ff.toString()+"\\");
+		
+		File results = new File("D:\\Downloads\\testsuite\\tester\\OriginThinSetup.exe");
+		if(!results.exists()){
+			fail();
+		}
+		FileUtils.deleteDirectory(ff);
+		if (ff.exists()){
+			fail();
+		}
 	}
 
 }
