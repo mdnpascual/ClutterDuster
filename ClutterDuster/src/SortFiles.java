@@ -18,9 +18,23 @@ public class SortFiles {
 	String sourcePath = "";
 	String destinationPath = "";
 	String folderName = "";
+	//Breaker Variables
 	volatile String outputStatus = "";
 	volatile int percentage = 0;
 	volatile Boolean interrupted = false;
+	//Tester Variables
+	String test_Alphanumeric_A_M = "";
+	String test_Alphanumeric_N_Z = "";
+	String test_Alphanumeric_0_9 = "";
+	String test_Alphanumeric_Unicode = "";
+	String test_FileType_Music = "";
+	String test_FileType_Video = "";
+	String test_FileType_Images = "";
+	String test_FileType_Document = "";
+	String test_FileType_Archives = "";
+	String test_FileType_Executables = "";
+	String test_FileType_Others = "";
+	
 	
 	public SortFiles(ArrayList<Object> Input){
 		isRetainFiles = (Boolean)Input.get(1);
@@ -48,19 +62,23 @@ public class SortFiles {
 			|| (filename.charAt(0) >= 'A' && filename.charAt(0) <= 'M')){
 					//A-M
 					outputStatus = outputStatus.concat(filename + " >> A-M\n");
+					test_Alphanumeric_A_M = test_Alphanumeric_A_M.concat(filename+"\n");
 				}
 				else {
 					//N-Z
 					outputStatus = outputStatus.concat(filename + " >> N-Z\n");
+					test_Alphanumeric_N_Z = test_Alphanumeric_N_Z.concat(filename+"\n");
 				}
 			}
 			else if (filename.charAt(0) >= '0' && filename.charAt(0) <= '9'){
 				//Digit check
 				outputStatus = outputStatus.concat(filename + " >> 0-9\n");
+				test_Alphanumeric_0_9 = test_Alphanumeric_0_9.concat(filename+"\n");
 			}
 			else{
 				//Unicode check
 				outputStatus = outputStatus.concat(filename + " >> Unicode\n");
+				test_Alphanumeric_Unicode = test_Alphanumeric_Unicode.concat(filename+"\n");
 			}
 			i++;
 			
@@ -88,17 +106,16 @@ public class SortFiles {
 	}
 	
 	public void fileType(List unsorted) throws IOException{
-
 		//Modify file types here
 		List<String> music = Arrays.asList("aac", "act", "aifc", "aiff", "aimppl", "amr", "asx", "au", "awb", "dct", "dss", "dvf", "flac", 
-									"fpl", "gsm", "iklax", "ivs", "m3u", "m4a", "m4p", "mmf", "mp2", "mp3", "mpc", "msv", "off", "ofr", 
-									"ofs", "oga", "ogg", "opus", "pla", "ra", "tta", "tta", "vlc", "vox", "wav", "wma", "wpl", "wv");
+											"fpl", "gsm", "iklax", "ivs", "m3u", "m4a", "m4p", "mmf", "mp2", "mp3", "mpc", "msv", "off", "ofr", 
+											"ofs", "oga", "ogg", "opus", "pla", "ra", "tta", "tta", "vlc", "vox", "wav", "wma", "wpl", "wv");
 		List<String> video = Arrays.asList("3g2", "3gp", "asf", "avi", "bik", "f4v", "flv", "m2v", "m4v", "mkv", "mng", "mov", "mp2", "mp4", 
-									"mpe", "mpeg", "mpg", "mpv", "mxf", "nsv", "qt", "rm", "rmvb", "swf", "vob", "webm", "wmv", "yuv");
+											"mpe", "mpeg", "mpg", "mpv", "mxf", "nsv", "qt", "rm", "rmvb", "swf", "vob", "webm", "wmv", "yuv");
 		List<String> images = Arrays.asList("3dm", "3ds", "max", "obj", "bmp", "dds", "gif", "jpg", "png", "psd", "pspimage", "tga", "thm", 
-									"tif", "tiff", "ai", "eps", "ps", "svg");
+											"tif", "tiff", "ai", "eps", "ps", "svg");
 		List<String> document = Arrays.asList("doc", "docm", "docx", "dot", "dotx", "epub", "log", "lwp", "mcw", "md", "nb", 
-									"nbp", "odm", "odt", "ott", "pdf", "ppt", "pptx", "rtf", "cvs", "txt", "xls", "xlsx", "xml", "wps", "wpt", "wrd");
+												"nbp", "odm", "odt", "ott", "pdf", "ppt", "pptx", "rtf", "cvs", "txt", "xls", "xlsx", "xml", "wps", "wpt", "wrd");
 		List<String> archives = Arrays.asList("7z", "bz2", "rar", "zip", "gz", "ezip", "ecab", "ipg", "lz", "lzh", "mpq", "par", "par2", "tar", "tgz", "iso", "img");
 		List<String> executables = Arrays.asList("exe", "jar", "bat", "apk", "app", "com", "ipa");
 		
@@ -117,29 +134,36 @@ public class SortFiles {
 			if(music.contains(ext)){
 				//sort to music
 				outputStatus = outputStatus.concat(filename + " >> Music\n");
+				test_FileType_Music = test_FileType_Music.concat(filename + "\n");
 			}
 			else if (video.contains(ext)){
 				//sort to video
 				outputStatus = outputStatus.concat(filename + " >> Video\n");
+				test_FileType_Video = test_FileType_Video.concat(filename + "\n");
 			}
 			else if (images.contains(ext)){
 				//sort to images
 				outputStatus = outputStatus.concat(filename + " >> Images\n");
+				test_FileType_Images = test_FileType_Images.concat(filename + "\n");
 			}
 			else if (document.contains(ext)){
 				//sort to document
 				outputStatus = outputStatus.concat(filename + " >> Document\n");
+				test_FileType_Document = test_FileType_Document.concat(filename + "\n");
 			}
 			else if (archives.contains(ext)){
 				//sort to archives
 				outputStatus = outputStatus.concat(filename + " >> Archives\n");
+				test_FileType_Archives = test_FileType_Archives.concat(filename + "\n");
 			}
 			else if (executables.contains(ext)){
 				//sort to executables
 				outputStatus = outputStatus.concat(filename + " >> Executables\n");
+				test_FileType_Executables = test_FileType_Executables.concat(filename + "\n");
 			}else{
 				//sort to others
 				outputStatus = outputStatus.concat(filename + " >> Others\n");
+				test_FileType_Others = test_FileType_Others.concat(filename + "\n");
 			}
 			i++;
 			if(update(i, unsorted.size(), results.size()) == 1)
