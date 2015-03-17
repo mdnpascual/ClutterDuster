@@ -521,8 +521,8 @@ public class maingui {
 					//------------Runnable thread #1 - Makes GUI Responsive------------
 					try {
 						if (t.isAlive()) {
-							t2.interrupt();
 							t.interrupt();
+							sorter.interrupted = true;
 						}
 					} catch (Exception e2) {
 						
