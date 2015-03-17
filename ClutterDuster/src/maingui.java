@@ -541,7 +541,7 @@ public class maingui {
 								txtrWdwSft.setText(sorter.outputStatus);		// Gets message from sorter class, outputStatus string is volatile
 								txtrWdwSft.setCaretPosition(txtrWdwSft.getDocument().getLength());	// Auto Scroll
 								try {
-									Thread.sleep(20);		// Waits max 4 cycles theoretically of List files loop before updating
+									Thread.sleep(10);		// Waits max 4 cycles theoretically of List files loop before updating
 								} catch (InterruptedException e) {
 									try {
 										/* If aborted, waits 100ms to give time to:
