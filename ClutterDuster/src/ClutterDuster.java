@@ -11,9 +11,6 @@ import org.apache.commons.io.output.*;
 
 public class ClutterDuster {
 
-	public static void main(String[] args)throws IOException {
-		
-	}
 	//FileType Filter
 	public static FileFilter typeFilter(String filetype){
 		FileFilter fooDirFilter = FileFilterUtils.suffixFileFilter(filetype);

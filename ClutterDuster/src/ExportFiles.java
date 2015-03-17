@@ -7,7 +7,7 @@ import org.apache.commons.io.FileUtils;
 public class ExportFiles {
 	
 	public void newFolder(String path, String folderName) throws IOException{
-		if("\\".equals(path.charAt(path.length()))){
+		if(path.charAt(path.length()-1) == 92){
 			//Path string ends with slash
 			FileUtils.forceMkdir(new File(path + folderName));
 		}
@@ -18,7 +18,17 @@ public class ExportFiles {
 	}
 	
 	public void moveFile(String source, String destination) throws IOException{
-		FileUtils.copyFile(new File(source), new File(destination), true);
+		int parts = source.lastIndexOf("\\");
+		String filename = source.substring(parts+1);
+		if(destination.charAt(destination.length()-1) == 92){
+			//Destination string ends with slash
+			FileUtils.copyFile(new File(source), new File(destination + filename), true);
+		}
+		else{
+			//Destination string DOESN'T end with slash
+			FileUtils.copyFile(new File(source), new File(destination + "\\" + filename), true);
+		}
+		
 	}
 	
 	public void moveDirectory(){
