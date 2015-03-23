@@ -6,6 +6,8 @@ A program the sorts your Cluttered folder. I.E: Google/Firefox Downloads folder
 
 Progress:
 
+Milestone #1
+
 ![Milestone #1](http://puu.sh/gLLB5/7431aa4422.png)
 
 - Sorting and Exporting is now implemented
