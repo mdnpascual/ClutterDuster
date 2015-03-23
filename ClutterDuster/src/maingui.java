@@ -51,6 +51,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import javax.swing.JFormattedTextField;
 
 public class maingui {
 	
@@ -225,6 +226,14 @@ public class maingui {
 		panel_2.add(lblFolderName);
 		
 		textFolderName = new JTextField();
+		textFolderName.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent evt) {
+				char c = evt.getKeyChar();
+		        if (!(Character.isLetter(c) || (Character.isDigit(c)) || (Character.isSpaceChar(c))))
+		            evt.consume();
+			}
+		});
 		textFolderName.setEnabled(false);
 		textFolderName.setBounds(98, 72, 258, 20);
 		panel_2.add(textFolderName);
@@ -513,7 +522,12 @@ public class maingui {
 					settings.add(chckbxRetainOriginalFiles.isSelected());
 					settings.add(textSourcePath.getText());
 					settings.add(textDestinationPath.getText());
-					settings.add(textFolderName.getText());
+					if(chckbxFolderGrouping.isSelected())
+						settings.add(textFolderName.getText());
+					else
+						settings.add("");
+					settings.add(false);
+					
 					
 					//Initialize Sorter
 					final SortFiles sorter = new SortFiles(settings);
