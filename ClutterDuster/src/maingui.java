@@ -15,6 +15,7 @@ import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.JLayeredPane;
 
+import org.apache.commons.io.FileUtils;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 
 import java.awt.Component;
@@ -51,6 +52,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 import javax.swing.JFormattedTextField;
 
 public class maingui {
@@ -555,7 +557,7 @@ public class maingui {
 								txtrWdwSft.setText(sorter.outputStatus);		// Gets message from sorter class, outputStatus string is volatile
 								txtrWdwSft.setCaretPosition(txtrWdwSft.getDocument().getLength());	// Auto Scroll
 								try {
-									Thread.sleep(10);		// Waits max 4 cycles theoretically of List files loop before updating
+									Thread.sleep(20);		// Waits max 4 cycles theoretically of List files loop before updating
 								} catch (InterruptedException e) {
 									try {
 										/* If aborted, waits 100ms to give time to:
@@ -566,7 +568,29 @@ public class maingui {
 										Thread.sleep(100);	
 									} catch (InterruptedException e1) {
 									}
+									btnGo.setFont(new Font("Tahoma", Font.BOLD, 24));
+									btnGo.setText("ABORTING");
+									btnGo.setForeground(Color.red);
+									btnGo.setEnabled(false);
+									//DELETER
+									int index = 0;
+									File toBeDeleted;
+									while (index < sorter.files.size()){
+										toBeDeleted = new File(sorter.files.get(index).toString());
+										FileUtils.deleteQuietly(toBeDeleted);
+										index++;
+									}
+									index = 0;
+									while(index < sorter.folders.size()){
+										toBeDeleted = new File(sorter.folders.get(index).toString());
+										FileUtils.deleteQuietly(toBeDeleted);
+										index++;
+									}
+									//DELETER
+									btnGo.setEnabled(true);
+									btnGo.setFont(new Font("Tahoma", Font.BOLD, 36));
 									txtrWdwSft.setText(sorter.outputStatus);	// Get final string update, Theoretical (1000ms - 100ms) response time window
+									txtrWdwSft.setText(sorter.outputStatus.concat(sorter.sortMethod + " sorting Aborted\n"));
 									enable();
 									isRunning = false;
 									isRunning2 = false;

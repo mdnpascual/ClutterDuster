@@ -19,6 +19,10 @@ public class SortFiles {
 	volatile String outputStatus = "";
 	volatile int percentage = 0;
 	volatile Boolean interrupted = false;
+	volatile String sortMethod = "";
+	//Public list for deletion
+	List files = new ArrayList();
+	List folders = new ArrayList();;
 	//Boolean variables for determining first pass
 	Boolean tempval1 = false;
 	Boolean tempval2 = false;
@@ -55,8 +59,11 @@ public class SortFiles {
 	public SortFiles(ArrayList<Object> Input){
 		isRetainFiles = (Boolean)Input.get(1);
 		sourcePath = (String)Input.get(2);
+		if(sourcePath.charAt(sourcePath.length()-1) != 92){
+			sourcePath = sourcePath.concat("\\");
+		}
 		destinationPath = (String)Input.get(3);
-		folderName = (String)Input.get(4);
+		folderName = (String)Input.get(4);	
 		if(destinationPath.charAt(destinationPath.length()-1) != 92){
 			destinationPath = destinationPath.concat("\\");
 		}
@@ -64,11 +71,23 @@ public class SortFiles {
 	}
 	
 	public void alphanumeric(List unsorted) throws IOException{
+		sortMethod = "Alphanumeric";
 		int i = 0;
-		
+		try{
+			folders.clear();
+			files.clear();
+		}catch (Exception e){
+			
+		}
+		if(!folderName.isEmpty())
+			folders.add(destinationPath + folderName);
+
 		File usethis = new File(sourcePath);
 		ListFiles execution = new ListFiles(true);
 		List results = execution.grabFileList(usethis);
+		if(sourcePath.compareToIgnoreCase(destinationPath) == 0){
+			results = new ArrayList();
+		}
 		ExportFiles newFiles = new ExportFiles();
 				
 		while (i < unsorted.size()){
@@ -90,9 +109,9 @@ public class SortFiles {
 						}
 						//Slash checking again
 						if(folderName.isEmpty())
-							newFiles.moveFile(path, destinationPath.concat("A-M"));
+							files.add(newFiles.moveFile(path, destinationPath.concat("A-M")));
 						else
-							newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\A-M"));				
+							files.add(newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\A-M")));				
 					}
 					outputStatus = outputStatus.concat(filename + " >> A-M\n");
 					test_Alphanumeric_A_M = test_Alphanumeric_A_M.concat(filename+"\n");
@@ -107,9 +126,9 @@ public class SortFiles {
 						}
 						//Slash checking again
 						if(folderName.isEmpty())
-							newFiles.moveFile(path, destinationPath.concat("N-Z"));
+							files.add(newFiles.moveFile(path, destinationPath.concat("N-Z")));
 						else
-							newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\N-Z"));				
+							files.add(newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\N-Z")));				
 					}
 					outputStatus = outputStatus.concat(filename + " >> N-Z\n");
 					test_Alphanumeric_N_Z = test_Alphanumeric_N_Z.concat(filename+"\n");
@@ -125,9 +144,9 @@ public class SortFiles {
 					}
 					//Slash checking again
 					if(folderName.isEmpty())
-						newFiles.moveFile(path, destinationPath.concat("0-9"));
+						files.add(newFiles.moveFile(path, destinationPath.concat("0-9")));
 					else
-						newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\0-9"));				
+						files.add(newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\0-9")));				
 				}
 				outputStatus = outputStatus.concat(filename + " >> 0-9\n");
 				test_Alphanumeric_0_9 = test_Alphanumeric_0_9.concat(filename+"\n");
@@ -137,14 +156,14 @@ public class SortFiles {
 				if(!testingPhase){
 					if(!tempval4){
 						//Create Folder if first pass
-						createFolder("0-9");
+						createFolder("Unicode");
 						tempval4 = true;
 					}
 					//Slash checking again
 					if(folderName.isEmpty())
-						newFiles.moveFile(path, destinationPath.concat("Unicode"));
+						files.add(newFiles.moveFile(path, destinationPath.concat("Unicode")));
 					else
-						newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\Unicode"));				
+						files.add(newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\Unicode")));				
 				}
 				outputStatus = outputStatus.concat(filename + " >> Unicode\n");
 				test_Alphanumeric_Unicode = test_Alphanumeric_Unicode.concat(filename+"\n");
@@ -158,12 +177,13 @@ public class SortFiles {
 		}
 		
 		//Handle Folders in the Source Path here
-		if (results.size() != 0){
+		if (results.size() != 0 && (sourcePath.compareToIgnoreCase(destinationPath)) != 0){
 			int j = 0;
 			while (j < results.size()){
 				String[] parts = new String[results.get(j).toString().split("\\\\").length];
 				parts = results.get(j).toString().split("\\\\");
 				FileUtils.copyDirectory(new File(results.get(j).toString()), new File(destinationPath+folderName+"\\"+parts[parts.length-1]), true);
+				folders.add(destinationPath+folderName+"\\"+parts[parts.length-1]);
 				outputStatus = outputStatus.concat(results.get(j).toString() + " Folder >> " + destinationPath + folderName + parts[parts.length-1] + "\\ Folder\n");
 				j++;i++;
 				if(update(i, unsorted.size(), results.size()) == 1)
@@ -179,6 +199,7 @@ public class SortFiles {
 	}
 	
 	public void fileType(List unsorted) throws IOException{
+		sortMethod = "File Type";
 		//Modify file types here
 		List<String> music = Arrays.asList("aac", "act", "aifc", "aiff", "aimppl", "amr", "asx", "au", "awb", "dct", "dss", "dvf", "flac", 
 											"fpl", "gsm", "iklax", "ivs", "m3u", "m4a", "m4p", "mmf", "mp2", "mp3", "mpc", "msv", "off", "ofr", 
@@ -192,9 +213,21 @@ public class SortFiles {
 		List<String> archives = Arrays.asList("7z", "bz2", "rar", "zip", "gz", "ezip", "ecab", "ipg", "lz", "lzh", "mpq", "par", "par2", "tar", "tgz", "iso", "img");
 		List<String> executables = Arrays.asList("exe", "jar", "bat", "apk", "app", "com", "ipa");
 		
+		try{
+			folders.clear();
+			files.clear();
+		}catch (Exception e){
+			
+		}
+		if(!folderName.isEmpty())
+			folders.add(destinationPath + folderName);
+		
 		File usethis = new File(sourcePath);
 		ListFiles execution = new ListFiles(true);
 		List results = execution.grabFileList(usethis);
+		if(sourcePath.compareToIgnoreCase(destinationPath) == 0){
+			results = new ArrayList();
+		}
 		ExportFiles newFiles = new ExportFiles();
 		
 		int i = 0;
@@ -215,9 +248,9 @@ public class SortFiles {
 					}
 					//Slash checking again
 					if(folderName.isEmpty())
-						newFiles.moveFile(path, destinationPath.concat("Music"));
+						files.add(newFiles.moveFile(path, destinationPath.concat("Music")));
 					else
-						newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\Music"));				
+						files.add(newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\Music")));				
 				}
 				outputStatus = outputStatus.concat(filename + " >> Music\n");
 				test_FileType_Music = test_FileType_Music.concat(filename + "\n");
@@ -232,9 +265,9 @@ public class SortFiles {
 					}
 					//Slash checking again
 					if(folderName.isEmpty())
-						newFiles.moveFile(path, destinationPath.concat("Video"));
+						files.add(newFiles.moveFile(path, destinationPath.concat("Video")));
 					else
-						newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\Video"));				
+						files.add(newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\Video")));				
 				}
 				outputStatus = outputStatus.concat(filename + " >> Video\n");
 				test_FileType_Video = test_FileType_Video.concat(filename + "\n");
@@ -249,9 +282,9 @@ public class SortFiles {
 					}
 					//Slash checking again
 					if(folderName.isEmpty())
-						newFiles.moveFile(path, destinationPath.concat("Images"));
+						files.add(newFiles.moveFile(path, destinationPath.concat("Images")));
 					else
-						newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\Images"));				
+						files.add(newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\Images")));				
 				}
 				outputStatus = outputStatus.concat(filename + " >> Images\n");
 				test_FileType_Images = test_FileType_Images.concat(filename + "\n");
@@ -266,9 +299,9 @@ public class SortFiles {
 					}
 					//Slash checking again
 					if(folderName.isEmpty())
-						newFiles.moveFile(path, destinationPath.concat("Document"));
+						files.add(newFiles.moveFile(path, destinationPath.concat("Document")));
 					else
-						newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\Document"));				
+						files.add(newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\Document")));				
 				}
 				outputStatus = outputStatus.concat(filename + " >> Document\n");
 				test_FileType_Document = test_FileType_Document.concat(filename + "\n");
@@ -283,9 +316,9 @@ public class SortFiles {
 					}
 					//Slash checking again
 					if(folderName.isEmpty())
-						newFiles.moveFile(path, destinationPath.concat("Archives"));
+						files.add(newFiles.moveFile(path, destinationPath.concat("Archives")));
 					else
-						newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\Archives"));				
+						files.add(newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\Archives")));				
 				}
 				outputStatus = outputStatus.concat(filename + " >> Archives\n");
 				test_FileType_Archives = test_FileType_Archives.concat(filename + "\n");
@@ -300,9 +333,9 @@ public class SortFiles {
 					}
 					//Slash checking again
 					if(folderName.isEmpty())
-						newFiles.moveFile(path, destinationPath.concat("Executables"));
+						files.add(newFiles.moveFile(path, destinationPath.concat("Executables")));
 					else
-						newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\Executables"));				
+						files.add(newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\Executables")));				
 				}
 				outputStatus = outputStatus.concat(filename + " >> Executables\n");
 				test_FileType_Executables = test_FileType_Executables.concat(filename + "\n");
@@ -316,9 +349,9 @@ public class SortFiles {
 					}
 					//Slash checking again
 					if(folderName.isEmpty())
-						newFiles.moveFile(path, destinationPath.concat("Others"));
+						files.add(newFiles.moveFile(path, destinationPath.concat("Others")));
 					else
-						newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\Others"));				
+						files.add(newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\Others")));				
 				}
 				outputStatus = outputStatus.concat(filename + " >> Others\n");
 				test_FileType_Others = test_FileType_Others.concat(filename + "\n");
@@ -331,12 +364,13 @@ public class SortFiles {
 		}
 		
 		//Handle Folders in the Source Path here
-		if (results.size() != 0){
+		if (results.size() != 0 && (sourcePath.compareToIgnoreCase(destinationPath)) != 0){
 			int j = 0;
 			while (j < results.size()){
 				String[] parts = new String[results.get(j).toString().split("\\\\").length];
 				parts = results.get(j).toString().split("\\\\");
 				FileUtils.copyDirectory(new File(results.get(j).toString()), new File(destinationPath+folderName+"\\"+parts[parts.length-1]), true);
+				folders.add(destinationPath+folderName+"\\"+parts[parts.length-1]);
 				outputStatus = outputStatus.concat(results.get(j).toString() + " Folder >> " + destinationPath + folderName + parts[parts.length-1] + "\\ Folder\n");
 				j++;i++;
 				if(update(i, unsorted.size(), results.size()) == 1)
@@ -352,7 +386,16 @@ public class SortFiles {
 	}
 	
 	public void dateSort(List unsorted) throws IOException{
+		sortMethod = "Date Sort";
 		int i = 0;
+		try{
+			folders.clear();
+			files.clear();
+		}catch (Exception e){
+			
+		}
+		if(!folderName.isEmpty())
+			folders.add(destinationPath + folderName);
 		
 		/*
 		 * Initialize list for:
@@ -362,6 +405,10 @@ public class SortFiles {
 		File usethis = new File(sourcePath);
 		ListFiles execution = new ListFiles(true);
 		List results = execution.grabFileList(usethis);
+		if(sourcePath.compareToIgnoreCase(destinationPath) == 0){
+			results = new ArrayList();
+		}
+		
 		if (update(1, unsorted.size(), results.size()+6) > 0)
 			return;
 		ListFiles listpto7 = new ListFiles(ClutterDuster.dateFilter(7, false));
@@ -408,9 +455,9 @@ public class SortFiles {
 					}
 					//Slash checking again
 					if(folderName.isEmpty())
-						newFiles.moveFile(path, destinationPath.concat("Present - 7 Days"));
+						files.add(newFiles.moveFile(path, destinationPath.concat("Present - 7 Days")));
 					else
-						newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\Present - 7 Days"));				
+						files.add(newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\Present - 7 Days")));				
 				}
 				outputStatus = outputStatus.concat(filename + " >> Present - 7 Days\n");
 				test_DateSort_L7days = test_DateSort_L7days.concat(filename + "\n");
@@ -436,9 +483,9 @@ public class SortFiles {
 					}
 					//Slash checking again
 					if(folderName.isEmpty())
-						newFiles.moveFile(path, destinationPath.concat("1 Week - 1 Month"));
+						files.add(newFiles.moveFile(path, destinationPath.concat("1 Week - 1 Month")));
 					else
-						newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\1 Week - 1 Month"));				
+						files.add(newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\1 Week - 1 Month")));				
 				}
 				outputStatus = outputStatus.concat(filename + " >> 1 Week - 1 Month\n");
 				test_DateSort_L1month = test_DateSort_L1month.concat(filename + "\n");
@@ -463,9 +510,9 @@ public class SortFiles {
 					}
 					//Slash checking again
 					if(folderName.isEmpty())
-						newFiles.moveFile(path, destinationPath.concat("1 Month - 6 Months"));
+						files.add(newFiles.moveFile(path, destinationPath.concat("1 Month - 6 Months")));
 					else
-						newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\1 Month - 6 Months"));				
+						files.add(newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\1 Month - 6 Months")));				
 				}
 				outputStatus = outputStatus.concat(filename + " >> 1 Month - 6 Months\n");
 				test_DateSort_L6months = test_DateSort_L6months.concat(filename + "\n");
@@ -490,9 +537,9 @@ public class SortFiles {
 					}
 					//Slash checking again
 					if(folderName.isEmpty())
-						newFiles.moveFile(path, destinationPath.concat("6 Months - 1 Year"));
+						files.add(newFiles.moveFile(path, destinationPath.concat("6 Months - 1 Year")));
 					else
-						newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\6 Months - 1 Year"));				
+						files.add(newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\6 Months - 1 Year")));				
 				}
 				outputStatus = outputStatus.concat(filename + " >> 6 Months - 1 Year\n");
 				test_DateSort_L1year = test_DateSort_L1year.concat(filename + "\n");
@@ -517,9 +564,9 @@ public class SortFiles {
 					}
 					//Slash checking again
 					if(folderName.isEmpty())
-						newFiles.moveFile(path, destinationPath.concat("1 Year and Older"));
+						files.add(newFiles.moveFile(path, destinationPath.concat("1 Year and Older")));
 					else
-						newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\1 Year and Older"));				
+						files.add(newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\1 Year and Older")));				
 				}
 				outputStatus = outputStatus.concat(filename + " >> 1 Year and Older\n");
 				test_DateSort_M1year = test_DateSort_M1year.concat(filename + "\n");
@@ -528,12 +575,13 @@ public class SortFiles {
 		}
 		
 		//Handle Folders in the Source Path here
-				if (results.size() != 0){
+				if (results.size() != 0 && (sourcePath.compareToIgnoreCase(destinationPath)) != 0){
 					int j = 0;
 					while (j < results.size()){
 						String[] parts = new String[results.get(j).toString().split("\\\\").length];
 						parts = results.get(j).toString().split("\\\\");
 						FileUtils.copyDirectory(new File(results.get(j).toString()), new File(destinationPath+folderName+"\\"+parts[parts.length-1]), true);
+						folders.add(destinationPath+folderName+"\\"+parts[parts.length-1]);
 						outputStatus = outputStatus.concat(results.get(j).toString() + " Folder >> " + destinationPath + folderName + parts[parts.length-1] + "\\ Folder\n");
 						j++;i++;
 						if(update(i+6, unsorted.size(), results.size()+6) == 1)
@@ -549,12 +597,25 @@ public class SortFiles {
 	}
 	
 	public void sizeSort(List unsorted) throws IOException{
+		sortMethod = "Size Sort";
 		int i = 0;
 		int type = 0;
+		try{
+			folders.clear();
+			files.clear();
+		}catch (Exception e){
+			
+		}
+		if(!folderName.isEmpty())
+			folders.add(destinationPath + folderName);
 		
 		File usethis = new File(sourcePath);
 		ListFiles execution = new ListFiles(true);
 		List results = execution.grabFileList(usethis);
+		if(sourcePath.compareToIgnoreCase(destinationPath) == 0){
+			results = new ArrayList();
+		}
+		
 		if (update(1, unsorted.size(), results.size()+6) > 0)
 			return;
 		ListFiles list0to1 = new ListFiles(ClutterDuster.sizeFilter((long)0, (long)1));
@@ -600,9 +661,9 @@ public class SortFiles {
 					}
 					//Slash checking again
 					if(folderName.isEmpty())
-						newFiles.moveFile(path, destinationPath.concat("Less than 1MB"));
+						files.add(newFiles.moveFile(path, destinationPath.concat("Less than 1MB")));
 					else
-						newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\Less than 1MB"));				
+						files.add(newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\Less than 1MB")));				
 				}
 				outputStatus = outputStatus.concat(filename + " >> Less than 1MB\n");
 				test_SizeSort_L1 = test_SizeSort_L1.concat(filename + "\n");
@@ -627,9 +688,9 @@ public class SortFiles {
 					}
 					//Slash checking again
 					if(folderName.isEmpty())
-						newFiles.moveFile(path, destinationPath.concat("1 - 10MB"));
+						files.add(newFiles.moveFile(path, destinationPath.concat("1 - 10MB")));
 					else
-						newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\1 - 10MB"));				
+						files.add(newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\1 - 10MB")));				
 				}
 				outputStatus = outputStatus.concat(filename + " >> 1 - 10MB\n");
 				test_SizeSort_L10 = test_SizeSort_L10.concat(filename + "\n");
@@ -654,9 +715,9 @@ public class SortFiles {
 					}
 					//Slash checking again
 					if(folderName.isEmpty())
-						newFiles.moveFile(path, destinationPath.concat("10 - 100MB"));
+						files.add(newFiles.moveFile(path, destinationPath.concat("10 - 100MB")));
 					else
-						newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\10 - 100MB"));				
+						files.add(newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\10 - 100MB")));				
 				}
 				outputStatus = outputStatus.concat(filename + " >> 10 - 100MB\n");
 				test_SizeSort_L100 = test_SizeSort_L100.concat(filename + "\n");
@@ -681,9 +742,9 @@ public class SortFiles {
 					}
 					//Slash checking again
 					if(folderName.isEmpty())
-						newFiles.moveFile(path, destinationPath.concat("100MB - 1GB"));
+						files.add(newFiles.moveFile(path, destinationPath.concat("100MB - 1GB")));
 					else
-						newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\100MB - 1GB"));				
+						files.add(newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\100MB - 1GB")));				
 				}
 				outputStatus = outputStatus.concat(filename + " >> 100MB - 1GB\n");
 				test_SizeSort_L1000 = test_SizeSort_L1000.concat(filename + "\n");
@@ -708,9 +769,9 @@ public class SortFiles {
 					}
 					//Slash checking again
 					if(folderName.isEmpty())
-						newFiles.moveFile(path, destinationPath.concat("Greater than 1GB"));
+						files.add(newFiles.moveFile(path, destinationPath.concat("Greater than 1GB")));
 					else
-						newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\Greater than 1GB"));				
+						files.add(newFiles.moveFile(path, destinationPath.concat(folderName).concat("\\Greater than 1GB")));				
 				}
 				outputStatus = outputStatus.concat(filename + " >> Greater than 1GB\n");
 				test_SizeSort_M1000 = test_SizeSort_M1000.concat(filename + "\n");
@@ -719,12 +780,13 @@ public class SortFiles {
 		}
 		
 		//Handle Folders in the Source Path here
-		if (results.size() != 0){
+		if (results.size() != 0 && (sourcePath.compareToIgnoreCase(destinationPath)) != 0){
 			int j = 0;
 			while (j < results.size()){
 				String[] parts = new String[results.get(j).toString().split("\\\\").length];
 				parts = results.get(j).toString().split("\\\\");
 				FileUtils.copyDirectory(new File(results.get(j).toString()), new File(destinationPath+folderName+"\\"+parts[parts.length-1]), true);
+				folders.add(destinationPath+folderName+"\\"+parts[parts.length-1]);
 				outputStatus = outputStatus.concat(results.get(j).toString() + " Folder >> " + destinationPath + folderName + parts[parts.length-1] + "\\ Folder\n");
 				j++;i++;
 				if(update(i+6, unsorted.size(), results.size()+6) == 1)
@@ -739,19 +801,17 @@ public class SortFiles {
 		outputStatus = outputStatus.concat("Sorting Complete!");
 	}
 	
-	public int update(int i, int unsortedSize, int resultsSize){
+	public int update(int i, int unsortedSize, int resultsSize) throws IOException{
 		//Updater
 		percentage = (int)(((float)i/(unsortedSize+resultsSize))*100);
 		if (interrupted == true){
 			return 1;
 		}
 		try {
-			Thread.sleep(3);	// Pauses 5ms to get interrupt flag, expose percentage and output string
+			Thread.sleep(5);	// Pauses 5ms to get interrupt flag, expose percentage and output string
 		} catch (InterruptedException e) {
-			StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
-			outputStatus = outputStatus.concat(stackTraceElements[2].getMethodName() + " Sorting Aborted!\n");
 			try {
-				Thread.sleep(300);	// Thread will stay alive for 1 second (Not sure what happens if User started new sort thread within 800ms)
+				Thread.sleep(50);	// Thread will stay alive for 1 second (Not sure what happens if User started new sort thread within 800ms)
 			} catch (InterruptedException e1) {
 				return 2;
 			}
@@ -759,12 +819,13 @@ public class SortFiles {
 		}
 		return 0;
 	}
+
 	
 	private void createFolder(String Name) throws IOException{
 		ExportFiles create = new ExportFiles();
 		if(folderName.isEmpty())
-			create.newFolder(destinationPath, Name);
+			folders.add(create.newFolder(destinationPath, Name));
 		else
-			create.newFolder(destinationPath + folderName + "\\", Name);
+			folders.add(create.newFolder(destinationPath + folderName + "\\", Name));
 	}
 }
