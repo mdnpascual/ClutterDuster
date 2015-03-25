@@ -741,7 +741,7 @@ public class SortFiles {
 	
 	public int update(int i, int unsortedSize, int resultsSize){
 		//Updater
-		percentage = (int)(((float)i/(unsortedSize+resultsSize-1))*100);
+		percentage = (int)(((float)i/(unsortedSize+resultsSize))*100);
 		if (interrupted == true){
 			return 1;
 		}
