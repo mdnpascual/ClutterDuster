@@ -22,7 +22,9 @@ public class SortFiles {
 	volatile String sortMethod = "";
 	//Public list for deletion
 	List files = new ArrayList();
-	List folders = new ArrayList();;
+	List folders = new ArrayList();
+	List files_source = new ArrayList();
+	List folders_source = new ArrayList();
 	//Boolean variables for determining first pass
 	Boolean tempval1 = false;
 	Boolean tempval2 = false;
@@ -71,6 +73,7 @@ public class SortFiles {
 	}
 	
 	public void alphanumeric(List unsorted) throws IOException{
+		outputStatus = "--Start--\n"; 
 		sortMethod = "Alphanumeric";
 		int i = 0;
 		try{
@@ -88,6 +91,8 @@ public class SortFiles {
 		if(sourcePath.compareToIgnoreCase(destinationPath) == 0){
 			results = new ArrayList();
 		}
+		folders_source = results;
+		files_source = unsorted;
 		ExportFiles newFiles = new ExportFiles();
 				
 		while (i < unsorted.size()){
@@ -176,6 +181,8 @@ public class SortFiles {
 				return;
 		}
 		
+		update(i, unsorted.size(), results.size());
+		
 		//Handle Folders in the Source Path here
 		if (results.size() != 0 && (sourcePath.compareToIgnoreCase(destinationPath)) != 0){
 			int j = 0;
@@ -195,10 +202,11 @@ public class SortFiles {
 		//Reset temp values
 		tempval1 = false;tempval2 = false;tempval3 = false;tempval4 = false;
 		
-		outputStatus = outputStatus.concat("Sorting Complete!");
+		outputStatus = outputStatus.concat("--Done--\n"); 
 	}
 	
 	public void fileType(List unsorted) throws IOException{
+		outputStatus = "--Start--\n"; 
 		sortMethod = "File Type";
 		//Modify file types here
 		List<String> music = Arrays.asList("aac", "act", "aifc", "aiff", "aimppl", "amr", "asx", "au", "awb", "dct", "dss", "dvf", "flac", 
@@ -228,6 +236,8 @@ public class SortFiles {
 		if(sourcePath.compareToIgnoreCase(destinationPath) == 0){
 			results = new ArrayList();
 		}
+		folders_source = results;
+		files_source = unsorted;
 		ExportFiles newFiles = new ExportFiles();
 		
 		int i = 0;
@@ -363,6 +373,8 @@ public class SortFiles {
 				return;
 		}
 		
+		update(i, unsorted.size(), results.size());
+		
 		//Handle Folders in the Source Path here
 		if (results.size() != 0 && (sourcePath.compareToIgnoreCase(destinationPath)) != 0){
 			int j = 0;
@@ -382,10 +394,11 @@ public class SortFiles {
 		//Reset temp values
 		tempval1 = false;tempval2 = false;tempval3 = false;tempval4 = false;tempval5 = false;tempval6 = false;tempval7 = false;
 		
-		outputStatus = outputStatus.concat("Sorting Complete!");
+		outputStatus = outputStatus.concat("--Done--\n"); 
 	}
 	
 	public void dateSort(List unsorted) throws IOException{
+		outputStatus = "--Start--\n"; 
 		sortMethod = "Date Sort";
 		int i = 0;
 		try{
@@ -408,6 +421,8 @@ public class SortFiles {
 		if(sourcePath.compareToIgnoreCase(destinationPath) == 0){
 			results = new ArrayList();
 		}
+		folders_source = results;
+		files_source = unsorted;
 		
 		if (update(1, unsorted.size(), results.size()+6) > 0)
 			return;
@@ -574,6 +589,8 @@ public class SortFiles {
 			}
 		}
 		
+		update(i+6, unsorted.size(), results.size()+6);
+		
 		//Handle Folders in the Source Path here
 				if (results.size() != 0 && (sourcePath.compareToIgnoreCase(destinationPath)) != 0){
 					int j = 0;
@@ -593,10 +610,11 @@ public class SortFiles {
 		//Reset temp values
 		tempval1 = false;tempval2 = false;tempval3 = false;tempval4 = false;tempval5 = false;
 				
-		outputStatus = outputStatus.concat("Sorting Complete!");
+		outputStatus = outputStatus.concat("--Done--\n"); 
 	}
 	
 	public void sizeSort(List unsorted) throws IOException{
+		outputStatus = "--Start--\n"; 
 		sortMethod = "Size Sort";
 		int i = 0;
 		int type = 0;
@@ -615,6 +633,8 @@ public class SortFiles {
 		if(sourcePath.compareToIgnoreCase(destinationPath) == 0){
 			results = new ArrayList();
 		}
+		folders_source = results;
+		files_source = unsorted;
 		
 		if (update(1, unsorted.size(), results.size()+6) > 0)
 			return;
@@ -779,6 +799,8 @@ public class SortFiles {
 			}	
 		}
 		
+		update(i+6, unsorted.size(), results.size()+6);
+		
 		//Handle Folders in the Source Path here
 		if (results.size() != 0 && (sourcePath.compareToIgnoreCase(destinationPath)) != 0){
 			int j = 0;
@@ -798,7 +820,7 @@ public class SortFiles {
 		//Reset temp values
 		tempval1 = false;tempval2 = false;tempval3 = false;tempval4 = false;tempval5 = false;
 		
-		outputStatus = outputStatus.concat("Sorting Complete!");
+		outputStatus = outputStatus.concat("--Done--\n"); 
 	}
 	
 	public int update(int i, int unsortedSize, int resultsSize) throws IOException{

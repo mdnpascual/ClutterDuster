@@ -495,25 +495,25 @@ public class maingui {
 					// -----------ERROR CHECKING-----------
 					File ff = new File(textSourcePath.getText());
 					File fff = new File(textDestinationPath.getText());
-					if (!ff.exists()){
-						txtrWdwSft.append("Source Path Invalid\n");
+					if (!ff.exists()) {
+						JOptionPane.showMessageDialog(null, "Invalid Source Path", "", 2);
 						return;
 					}
-					else if (!fff.exists()){
-						txtrWdwSft.append("Destination Path Invalid\n");
+					else if (!fff.exists()) {
+						JOptionPane.showMessageDialog(null, "Invalid Destination Path", "", 2);
 						return;
 					}
 					
-					if(!ff.canRead()){
-						txtrWdwSft.append("Access Denied on Source Path\n");
+					if (!ff.canRead()) {
+						JOptionPane.showMessageDialog(null, "Access Denied on Source Path", "", 2);
 						return;
 					}
-					if(!fff.canRead()){
-						txtrWdwSft.append("Access Denied on Destination Path\n");
+					if (!fff.canRead()) {
+						JOptionPane.showMessageDialog(null, "Access Denied on Destination Path", "", 2);
 						return;
 					}
-					if(!fff.canWrite()){
-						txtrWdwSft.append("Access Denied on Destination Path\n");
+					if (!fff.canWrite()) {
+						JOptionPane.showMessageDialog(null, "Access Denied on Destination Path", "", 2);
 						return;
 					}
 					// ---------ERROR CHECKING END---------
@@ -559,20 +559,20 @@ public class maingui {
 								try {
 									Thread.sleep(20);		// Waits max 4 cycles theoretically of List files loop before updating
 								} catch (InterruptedException e) {
+									btnGo.setFont(new Font("Tahoma", Font.BOLD, 24));
+									btnGo.setText("ABORTING");
+									btnGo.setForeground(Color.red);
+									btnGo.setEnabled(false);
 									try {
 										/* If aborted, waits 100ms to give time to:
 										 * 1) pass the interrupted flag to sorter class
 										 * 2) sorter class detects the flag
 										 * 3) sorter class to output the final string update
 										 */
-										Thread.sleep(100);	
+										Thread.sleep(1000);	
 									} catch (InterruptedException e1) {
 									}
-									btnGo.setFont(new Font("Tahoma", Font.BOLD, 24));
-									btnGo.setText("ABORTING");
-									btnGo.setForeground(Color.red);
-									btnGo.setEnabled(false);
-									//DELETER
+									//START DESTINATION PATH DELETER
 									int index = 0;
 									File toBeDeleted;
 									while (index < sorter.files.size()){
@@ -586,11 +586,13 @@ public class maingui {
 										FileUtils.deleteQuietly(toBeDeleted);
 										index++;
 									}
-									//DELETER
+									//END DESTINATION PATH DELETER
 									btnGo.setEnabled(true);
 									btnGo.setFont(new Font("Tahoma", Font.BOLD, 36));
 									txtrWdwSft.setText(sorter.outputStatus);	// Get final string update, Theoretical (1000ms - 100ms) response time window
-									txtrWdwSft.setText(sorter.outputStatus.concat(sorter.sortMethod + " sorting Aborted\n"));
+									if (!txtrWdwSft.getText().isEmpty()) {
+										txtrWdwSft.append("--Aborted--\n");
+									}
 									enable();
 									isRunning = false;
 									isRunning2 = false;
@@ -598,6 +600,23 @@ public class maingui {
 								}
 							}
 							txtrWdwSft.setText(sorter.outputStatus);	// Get final string update
+							if (!chckbxRetainOriginalFiles.isSelected()){
+								//START SOURCE PATH DELETER
+								int index = 0;
+								File toBeDeleted;
+								while (index < sorter.files_source.size()){
+									toBeDeleted = new File(sorter.files_source.get(index).toString());
+									FileUtils.deleteQuietly(toBeDeleted);
+									index++;
+								}
+								index = 0;
+								while(index < sorter.folders_source.size()){
+									toBeDeleted = new File(sorter.folders_source.get(index).toString());
+									FileUtils.deleteQuietly(toBeDeleted);
+									index++;
+								}
+								//END SOURCE PATH DELETER
+							}
 							enable();
 							isRunning = false;
 					    }
@@ -630,7 +649,7 @@ public class maingui {
 									isRunning = false;
 									isRunning2 = false;
 									Thread.sleep(200);
-									txtrWdwSft.setText("No Files to be Sorted!");
+									JOptionPane.showMessageDialog(null, "No Files to Sort", "", 2); 
 									return;
 								}
 								if (rdbtnAlphanumerically.isSelected()){
