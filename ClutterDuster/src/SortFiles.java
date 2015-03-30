@@ -22,7 +22,9 @@ public class SortFiles {
 	volatile String sortMethod = "";
 	//Public list for deletion
 	List files = new ArrayList();
-	List folders = new ArrayList();;
+	List folders = new ArrayList();
+	List files_source = new ArrayList();
+	List folders_source = new ArrayList();
 	//Boolean variables for determining first pass
 	Boolean tempval1 = false;
 	Boolean tempval2 = false;
@@ -88,6 +90,8 @@ public class SortFiles {
 		if(sourcePath.compareToIgnoreCase(destinationPath) == 0){
 			results = new ArrayList();
 		}
+		folders_source = results;
+		files_source = unsorted;
 		ExportFiles newFiles = new ExportFiles();
 				
 		while (i < unsorted.size()){
@@ -176,6 +180,8 @@ public class SortFiles {
 				return;
 		}
 		
+		update(i, unsorted.size(), results.size());
+		
 		//Handle Folders in the Source Path here
 		if (results.size() != 0 && (sourcePath.compareToIgnoreCase(destinationPath)) != 0){
 			int j = 0;
@@ -228,6 +234,8 @@ public class SortFiles {
 		if(sourcePath.compareToIgnoreCase(destinationPath) == 0){
 			results = new ArrayList();
 		}
+		folders_source = results;
+		files_source = unsorted;
 		ExportFiles newFiles = new ExportFiles();
 		
 		int i = 0;
@@ -363,6 +371,8 @@ public class SortFiles {
 				return;
 		}
 		
+		update(i, unsorted.size(), results.size());
+		
 		//Handle Folders in the Source Path here
 		if (results.size() != 0 && (sourcePath.compareToIgnoreCase(destinationPath)) != 0){
 			int j = 0;
@@ -408,6 +418,8 @@ public class SortFiles {
 		if(sourcePath.compareToIgnoreCase(destinationPath) == 0){
 			results = new ArrayList();
 		}
+		folders_source = results;
+		files_source = unsorted;
 		
 		if (update(1, unsorted.size(), results.size()+6) > 0)
 			return;
@@ -574,6 +586,8 @@ public class SortFiles {
 			}
 		}
 		
+		update(i+6, unsorted.size(), results.size()+6);
+		
 		//Handle Folders in the Source Path here
 				if (results.size() != 0 && (sourcePath.compareToIgnoreCase(destinationPath)) != 0){
 					int j = 0;
@@ -615,6 +629,8 @@ public class SortFiles {
 		if(sourcePath.compareToIgnoreCase(destinationPath) == 0){
 			results = new ArrayList();
 		}
+		folders_source = results;
+		files_source = unsorted;
 		
 		if (update(1, unsorted.size(), results.size()+6) > 0)
 			return;
@@ -778,6 +794,8 @@ public class SortFiles {
 				i++;j++;
 			}	
 		}
+		
+		update(i+6, unsorted.size(), results.size()+6);
 		
 		//Handle Folders in the Source Path here
 		if (results.size() != 0 && (sourcePath.compareToIgnoreCase(destinationPath)) != 0){
