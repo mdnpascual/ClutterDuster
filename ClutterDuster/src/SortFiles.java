@@ -73,6 +73,7 @@ public class SortFiles {
 	}
 	
 	public void alphanumeric(List unsorted) throws IOException{
+		outputStatus = "--Start--\n"; 
 		sortMethod = "Alphanumeric";
 		int i = 0;
 		try{
@@ -201,10 +202,11 @@ public class SortFiles {
 		//Reset temp values
 		tempval1 = false;tempval2 = false;tempval3 = false;tempval4 = false;
 		
-		outputStatus = outputStatus.concat("Sorting Complete!");
+		outputStatus = outputStatus.concat("--Done--\n"); 
 	}
 	
 	public void fileType(List unsorted) throws IOException{
+		outputStatus = "--Start--\n"; 
 		sortMethod = "File Type";
 		//Modify file types here
 		List<String> music = Arrays.asList("aac", "act", "aifc", "aiff", "aimppl", "amr", "asx", "au", "awb", "dct", "dss", "dvf", "flac", 
@@ -392,10 +394,11 @@ public class SortFiles {
 		//Reset temp values
 		tempval1 = false;tempval2 = false;tempval3 = false;tempval4 = false;tempval5 = false;tempval6 = false;tempval7 = false;
 		
-		outputStatus = outputStatus.concat("Sorting Complete!");
+		outputStatus = outputStatus.concat("--Done--\n"); 
 	}
 	
 	public void dateSort(List unsorted) throws IOException{
+		outputStatus = "--Start--\n"; 
 		sortMethod = "Date Sort";
 		int i = 0;
 		try{
@@ -607,10 +610,11 @@ public class SortFiles {
 		//Reset temp values
 		tempval1 = false;tempval2 = false;tempval3 = false;tempval4 = false;tempval5 = false;
 				
-		outputStatus = outputStatus.concat("Sorting Complete!");
+		outputStatus = outputStatus.concat("--Done--\n"); 
 	}
 	
 	public void sizeSort(List unsorted) throws IOException{
+		outputStatus = "--Start--\n"; 
 		sortMethod = "Size Sort";
 		int i = 0;
 		int type = 0;
@@ -816,7 +820,7 @@ public class SortFiles {
 		//Reset temp values
 		tempval1 = false;tempval2 = false;tempval3 = false;tempval4 = false;tempval5 = false;
 		
-		outputStatus = outputStatus.concat("Sorting Complete!");
+		outputStatus = outputStatus.concat("--Done--\n"); 
 	}
 	
 	public int update(int i, int unsortedSize, int resultsSize) throws IOException{
