@@ -1,15 +1,13 @@
-# ClutterDuster
-
-A program the sorts your Cluttered folder. I.E: Google/Firefox Downloads folder
-
-![ClutterDuster in Action](http://puu.sh/gLLIu/c1b03900a5.png)
-
-Progress:
-
-Milestone #1
-
-![Milestone #1](http://puu.sh/gLLB5/7431aa4422.png)
-
-- Sorting and Exporting is now implemented
-- Handling files when aborting not yet implemented
-- Deletion (!Retain Original Files) not yet implemented
+ # ClutterDuster
+ 
+ A program the sorts your Cluttered folder. I.E: Google/Firefox Downloads folder
+ 
+ ![ClutterDuster in Action](http://puu.sh/gLLIu/c1b03900a5.png)
+ 
+Test Build
+ 
+Automated Test cases:
+![Test Build](http://puu.sh/gW3QX/e1a1fea3a4.jpg)
+ 
+Gui Manual Test cases:
+![Test Build](http://puu.sh/gW58X/bcefdd9e9d.jpg)
