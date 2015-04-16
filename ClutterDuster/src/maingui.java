@@ -57,7 +57,7 @@ import javax.swing.JFormattedTextField;
 
 public class maingui {
 	
-	private JFrame frame;
+	private JFrame frmClutterduster;
 	private JTextField textSourcePath;
 	private JTextField textFolderName;
 	private JTextField textDestinationPath;
@@ -75,7 +75,7 @@ public class maingui {
 			public void run() {
 				try {
 					maingui window = new maingui();
-					window.frame.setVisible(true);
+					window.frmClutterduster.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -91,15 +91,17 @@ public class maingui {
 	// Initialize the contents of the frame
 	private void initialize() {
 		
-		frame = new JFrame();
-		frame.setBounds(100, 100, 896, 530);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		frmClutterduster = new JFrame();
+		frmClutterduster.setResizable(false);
+		frmClutterduster.setTitle("ClutterDuster");
+		frmClutterduster.setBounds(100, 100, 896, 530);
+		frmClutterduster.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmClutterduster.getContentPane().setLayout(null);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(null);
 		panel_1.setBounds(30, 45, 82, 20);
-		frame.getContentPane().add(panel_1);
+		frmClutterduster.getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 		
 		JLabel lblSortMethod = new JLabel("Sort Method");
@@ -111,25 +113,25 @@ public class maingui {
 		final JLabel lblSourcePath = new JLabel("Source Path:");
 		lblSourcePath.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblSourcePath.setBounds(10, 20, 99, 14);
-		frame.getContentPane().add(lblSourcePath);
+		frmClutterduster.getContentPane().add(lblSourcePath);
 		
 		textSourcePath = new JTextField();
 		
 		textSourcePath.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		textSourcePath.setBounds(110, 19, 494, 20);
-		frame.getContentPane().add(textSourcePath);
+		frmClutterduster.getContentPane().add(textSourcePath);
 		textSourcePath.setColumns(10);
 		
 		final JButton btnBrowse = new JButton("Browse");
 		
 		btnBrowse.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnBrowse.setBounds(614, 16, 102, 23);
-		frame.getContentPane().add(btnBrowse);
+		frmClutterduster.getContentPane().add(btnBrowse);
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel.setBounds(20, 55, 419, 155);
-		frame.getContentPane().add(panel);
+		frmClutterduster.getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		final JLabel lblChooseCriteria = new JLabel("Choose criteria to sort by:");
@@ -194,7 +196,7 @@ public class maingui {
 		panel_3.setLayout(null);
 		panel_3.setBorder(null);
 		panel_3.setBounds(463, 45, 113, 20);
-		frame.getContentPane().add(panel_3);
+		frmClutterduster.getContentPane().add(panel_3);
 		
 		JLabel lblAdditionalOptions = new JLabel("Additional Options");
 		lblAdditionalOptions.setHorizontalAlignment(SwingConstants.CENTER);
@@ -205,7 +207,7 @@ public class maingui {
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_2.setBounds(449, 55, 409, 155);
-		frame.getContentPane().add(panel_2);
+		frmClutterduster.getContentPane().add(panel_2);
 		panel_2.setLayout(null);
 		
 		final JCheckBox chckbxFolderGrouping = new JCheckBox("Folder Grouping");
@@ -256,7 +258,7 @@ public class maingui {
 		final JLabel lblDestinationPath = new JLabel("Destination Path:");
 		lblDestinationPath.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblDestinationPath.setBounds(10, 222, 123, 14);
-		frame.getContentPane().add(lblDestinationPath);
+		frmClutterduster.getContentPane().add(lblDestinationPath);
 		
 		textDestinationPath = new JTextField();
 		
@@ -264,25 +266,25 @@ public class maingui {
 		textDestinationPath.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		textDestinationPath.setColumns(10);
 		textDestinationPath.setBounds(143, 221, 494, 20);
-		frame.getContentPane().add(textDestinationPath);
+		frmClutterduster.getContentPane().add(textDestinationPath);
 		
 		final JButton btnChangeDestinationFolder = new JButton("Change Destination Folder");
 		
 		btnChangeDestinationFolder.setEnabled(false);
 		btnChangeDestinationFolder.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnChangeDestinationFolder.setBounds(143, 252, 194, 23);
-		frame.getContentPane().add(btnChangeDestinationFolder);
+		frmClutterduster.getContentPane().add(btnChangeDestinationFolder);
 		
 		final JButton btnUseSource = new JButton("Use Source");
 				
 		btnUseSource.setEnabled(false);
 		btnUseSource.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnUseSource.setBounds(347, 252, 123, 23);
-		frame.getContentPane().add(btnUseSource);
+		frmClutterduster.getContentPane().add(btnUseSource);
 		
 		JPanel panel_4 = new JPanel();
 		panel_4.setBounds(647, 221, 211, 54);
-		frame.getContentPane().add(panel_4);
+		frmClutterduster.getContentPane().add(panel_4);
 		panel_4.setLayout(null);
 		
 		btnGo = new JButton("GO");
@@ -295,7 +297,7 @@ public class maingui {
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(11, 286, 847, 155);
-		frame.getContentPane().add(scrollPane);
+		frmClutterduster.getContentPane().add(scrollPane);
 		
 		final JTextArea txtrWdwSft = new JTextArea();
 		txtrWdwSft.setEditable(false);
@@ -307,13 +309,13 @@ public class maingui {
 		progressBar.setFont(new Font("Tahoma", Font.BOLD, 14));
 		progressBar.setStringPainted(true);
 		progressBar.setBounds(84, 452, 774, 28);
-		frame.getContentPane().add(progressBar);
+		frmClutterduster.getContentPane().add(progressBar);
 		
 		final JLabel lblProgress = new JLabel("Progress:");
 		lblProgress.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblProgress.setBounds(10, 454, 70, 21);
-		frame.getContentPane().add(lblProgress);
-		frame.getContentPane().setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{lblSourcePath, textSourcePath, btnBrowse}));
+		frmClutterduster.getContentPane().add(lblProgress);
+		frmClutterduster.getContentPane().setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{lblSourcePath, textSourcePath, btnBrowse}));
 		
 		textSourcePath.addKeyListener(new KeyAdapter() {
 			@Override
@@ -486,149 +488,155 @@ public class maingui {
 		
 		btnGo.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e){
+			public void mouseClicked(MouseEvent e) {
 				if (btnGo.isEnabled()) {
 					txtrWdwSft.setEnabled(true);
 					txtrWdwSft.setBackground(Color.white);
 					progressBar.setEnabled(true);
 					
-					// -----------ERROR CHECKING-----------
-					File ff = new File(textSourcePath.getText());
-					File fff = new File(textDestinationPath.getText());
-					if (!ff.exists()) {
+					// ---------ERROR CHECKING---------
+					File fileSourcePath = new File(textSourcePath.getText());
+					File fileDestinationPath = new File(textDestinationPath.getText());
+					if (!fileSourcePath.exists()) {
 						JOptionPane.showMessageDialog(null, "Invalid Source Path", "", 2);
 						return;
 					}
-					else if (!fff.exists()) {
+					else if (!fileDestinationPath.exists()) {
 						JOptionPane.showMessageDialog(null, "Invalid Destination Path", "", 2);
 						return;
 					}
 					
-					if (!ff.canRead()) {
+					if (!fileSourcePath.canRead()) {
 						JOptionPane.showMessageDialog(null, "Access Denied on Source Path", "", 2);
 						return;
 					}
-					if (!fff.canRead()) {
+					if (!fileDestinationPath.canRead()) {
 						JOptionPane.showMessageDialog(null, "Access Denied on Destination Path", "", 2);
 						return;
 					}
-					if (!fff.canWrite()) {
+					if (!fileDestinationPath.canWrite()) {
 						JOptionPane.showMessageDialog(null, "Access Denied on Destination Path", "", 2);
 						return;
 					}
 					// ---------ERROR CHECKING END---------
 					
-					//Passing the settings chosen
+					// Passing the settings chosen
 					ArrayList<Object> settings = new ArrayList<Object>();
 					settings.add(chckbxFolderGrouping.isSelected());
 					settings.add(chckbxRetainOriginalFiles.isSelected());
 					settings.add(textSourcePath.getText());
 					settings.add(textDestinationPath.getText());
-					if(chckbxFolderGrouping.isSelected())
+					if (chckbxFolderGrouping.isSelected())
 						settings.add(textFolderName.getText());
 					else
 						settings.add("");
-					settings.add(false);
 					
-					
-					//Initialize Sorter
+					// Initialize Sorter
 					final SortFiles sorter = new SortFiles(settings);
 					
-					//------------Runnable thread #1 - Makes GUI Responsive------------
+					// ------------Runnable thread #1 - Makes GUI Responsive------------
 					try {
 						if (t.isAlive()) {
+							// Only goes in if goButton is pressed while sorting is still active, the only time this happens
+							// is if sorting is aborted							
 							t.interrupt();
-							sorter.interrupted = true;
+							sorter.interrupted = true;	// Tells the sorter thread to halt
 						}
 					} catch (Exception e2) {
-						
 					}
 					t = new Thread(new Runnable() {
 						
 						public void run() {					    	
 							isRunning = true;
-					    	disable();
-
-							int i = 0;
-							//While Percentage is less than 100%
-							while (i < 100){
+					    	disable();		// Disable GUI control
+					    	
+					    	int i = 0;
+							// While less than 100%
+							while (i < 100) {
 								i = sorter.percentage;		// Gets percentage from sorter class, percentage variable is volatile
 								progressBar.setValue(i); 
 								txtrWdwSft.setText(sorter.outputStatus);		// Gets message from sorter class, outputStatus string is volatile
 								txtrWdwSft.setCaretPosition(txtrWdwSft.getDocument().getLength());	// Auto Scroll
 								try {
-									Thread.sleep(20);		// Waits max 4 cycles theoretically of List files loop before updating
+									Thread.sleep(20);		// Waits max 4 cycles theoretically of list files loop before updating
 								} catch (InterruptedException e) {
+									// catch block is the Sequence to halt sorting
 									btnGo.setFont(new Font("Tahoma", Font.BOLD, 24));
 									btnGo.setText("ABORTING");
 									btnGo.setForeground(Color.red);
 									btnGo.setEnabled(false);
 									try {
-										/* If aborted, waits 100ms to give time to:
+										/* If aborted, waits 1000ms to give time to:
 										 * 1) pass the interrupted flag to sorter class
 										 * 2) sorter class detects the flag
-										 * 3) sorter class to output the final string update
+										 * 3) Halts the sorting
+										 * 4) sorter class to output the final string update
 										 */
 										Thread.sleep(1000);	
 									} catch (InterruptedException e1) {
 									}
-									//START DESTINATION PATH DELETER
+									// START DESTINATION PATH DELETER
 									int index = 0;
 									File toBeDeleted;
-									while (index < sorter.files.size()){
+									while (index < sorter.files.size()) {
 										toBeDeleted = new File(sorter.files.get(index).toString());
-										FileUtils.deleteQuietly(toBeDeleted);
+										FileUtils.deleteQuietly(toBeDeleted);	// Deleted files created
 										index++;
 									}
 									index = 0;
-									while(index < sorter.folders.size()){
+									while (index < sorter.folders.size()) {
 										toBeDeleted = new File(sorter.folders.get(index).toString());
-										FileUtils.deleteQuietly(toBeDeleted);
+										FileUtils.deleteQuietly(toBeDeleted);	// Deleted folders created
 										index++;
 									}
-									//END DESTINATION PATH DELETER
+									// END DESTINATION PATH DELETER
 									btnGo.setEnabled(true);
 									btnGo.setFont(new Font("Tahoma", Font.BOLD, 36));
-									txtrWdwSft.setText(sorter.outputStatus);	// Get final string update, Theoretical (1000ms - 100ms) response time window
+									txtrWdwSft.setText(sorter.outputStatus);	// Get final string update, Theoretical (1000ms - 50ms) response time window
 									if (!txtrWdwSft.getText().isEmpty()) {
+										// If logbox is empty, it means sorter thread wasn't started implying there was no files to be sorted
+										// This will only be executed if there are files to be sorted
 										txtrWdwSft.append("--Aborted--\n");
 									}
-									enable();
+									enable();	// Enable GUI control
 									isRunning = false;
 									isRunning2 = false;
 									return;
 								}
 							}
+							// Will only execute these if sorting is succesful
 							txtrWdwSft.setText(sorter.outputStatus);	// Get final string update
-							if (!chckbxRetainOriginalFiles.isSelected()){
-								//START SOURCE PATH DELETER
+							if (!chckbxRetainOriginalFiles.isSelected()) {
+								// START SOURCE PATH DELETER
 								int index = 0;
 								File toBeDeleted;
-								while (index < sorter.files_source.size()){
+								while (index < sorter.files_source.size()) {
 									toBeDeleted = new File(sorter.files_source.get(index).toString());
-									FileUtils.deleteQuietly(toBeDeleted);
+									FileUtils.deleteQuietly(toBeDeleted);	// Deleted files created
 									index++;
 								}
 								index = 0;
-								while(index < sorter.folders_source.size()){
+								while (index < sorter.folders_source.size()) {
 									toBeDeleted = new File(sorter.folders_source.get(index).toString());
-									FileUtils.deleteQuietly(toBeDeleted);
+									FileUtils.deleteQuietly(toBeDeleted);	// Deleted folders created
 									index++;
 								}
-								//END SOURCE PATH DELETER
+								// END SOURCE PATH DELETER
 							}
-							enable();
+							enable();	// Enable GUI control
 							isRunning = false;
 					    }
 					}, "worker");
 					if (!isRunning) {
 						t.start();
 					}
-					//--------Runnable thread #1 - Makes GUI Responsive END--------
+					// --------Runnable thread #1 - Makes GUI Responsive END--------
 					
-					//Sorter thread
+					// Sorter thread
 					try {
 						if (t2.isAlive()) {
+							// Only goes in if goButton is pressed while sorting is still active, the only time this happens
+							// is if sorting is aborted. 
 							sorter.interrupted = true;
 							t2.interrupt();
 						}
@@ -636,32 +644,33 @@ public class maingui {
 					}
 					t2 = new Thread(new Runnable() {
 						
-						public void run(){
+						public void run() {
 							isRunning2 = true;
 							File usethis = new File(textSourcePath.getText());
 							ListFiles execution = new ListFiles();
 							List results;
 							try {
 								results = execution.grabFileList(usethis);		// No Filter
-								if (results.size() == 0){
+								if (results.size() == 0) {
 									// Source Folder has no files to sort
 									t.interrupt();
 									isRunning = false;
 									isRunning2 = false;
 									Thread.sleep(200);
-									JOptionPane.showMessageDialog(null, "No Files to Sort", "", 2); 
+									JOptionPane.showMessageDialog(null, "No Files to Sort", "", 2);
 									return;
 								}
-								if (rdbtnAlphanumerically.isSelected()){
+								// If there's files to sort, execute sorter depending on user choice
+								if (rdbtnAlphanumerically.isSelected()) {
 									sorter.alphanumeric(results);
 						    	}
-								else if (rdbtnDateCreated.isSelected()){
+								else if (rdbtnDateCreated.isSelected()) {
 						    		sorter.dateSort(results);
 						    	}
-								else if (rdbtnFilzeSize.isSelected()){
+								else if (rdbtnFilzeSize.isSelected()) {
 						    		sorter.sizeSort(results);
 						    	}
-								else if (rdbtnFileType.isSelected()){
+								else if (rdbtnFileType.isSelected()) {
 						    		sorter.fileType(results);
 						    	}
 							} catch (IOException e) {
